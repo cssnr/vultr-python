@@ -7,3 +7,43 @@ Python wrapper for the Vultr API.
 
 - [https://www.vultr.com](https://www.vultr.com/?ref=6905748)
 - [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
+
+This is currently a WIP and not complete, but has some functions.
+
+## Examples
+
+Initialize the class with your API Token
+```python
+from vultr import Vultr
+
+vultr = Vultr('XXXXXXXXXX')
+```
+List plans and get available regions for that plan
+```python
+plans = vultr.list_plans()
+plan = plans[0]  # 0 seems to be the basic 5 dollar plan
+regions = vultr.list_regions()
+available = vultr.filter_regions(regions, plan['locations'])
+```
+Get the OS list and filter by name
+```python
+os_list = vultr.list_os()
+ubuntu_lts = vultr.filter_os(os_list, 'Ubuntu 20.04 x64')
+```
+Create a new ssh key from key string
+```python
+sshkey = vultr.create_key('shane-secure-102916', 'ssh-rsa AAAA...')
+```
+Create a new instance
+```python
+hostname = 'my-new-host'
+data = {
+    'region': 'dfw',
+    'plan': 'vc2-1c-1gb',
+    'os_id': ubuntu_lts['id'],
+    'sshkey_id': sshkey['id'],
+    'hostname': hostname,
+    'label': hostname,
+}
+instance = vultr.create_instance(**data)
+```

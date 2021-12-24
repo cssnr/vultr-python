@@ -5,6 +5,9 @@ class Vultr(object):
     url = 'https://api.vultr.com/v2'
 
     def __init__(self, api_token: str):
+        """
+        :param str api_token: Vultr API Token
+        """
         self.token = api_token
         self.s = requests.session()
         self.s.headers.update({'Authorization': f'Bearer {api_token}'})
