@@ -5,8 +5,8 @@
 
 Python wrapper for the Vultr API.
 
-  - [https://www.vultr.com](https://www.vultr.com/?ref=6905748)
-  - [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
+-  [https://www.vultr.com](https://www.vultr.com/?ref=6905748)
+-  [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
 This is currently a WIP and not complete, but has some functions.
 
@@ -15,7 +15,7 @@ This is currently a WIP and not complete, but has some functions.
 You will need to create a token and whitelist your IP address.
 Most functions do not work without an API Token.
 
-  - [https://my.vultr.com/settings/#settingsapi](https://my.vultr.com/settings/#settingsapi)
+-  [https://my.vultr.com/settings/#settingsapi](https://my.vultr.com/settings/#settingsapi)
 
 Initialize the class with your API Token
 ```python
