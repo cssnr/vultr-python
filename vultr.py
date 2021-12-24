@@ -30,7 +30,7 @@ class Vultr(object):
         r = self.s.delete(url, timeout=10)
         if not r.ok:
             r.raise_for_status()
-        return r.json()
+        return None
 
     def list_regions(self):
         url = f'{self.url}/regions'
@@ -52,7 +52,7 @@ class Vultr(object):
         url = f'{self.url}/startup-scripts'
         data = {'name': name, 'script': script}
         data.update(kwargs)
-        return self._post(url, data)
+        return self._post(url, data)['startup_script']
 
     def list_keys(self):
         url = f'{self.url}/ssh-keys'
@@ -62,7 +62,7 @@ class Vultr(object):
         url = f'{self.url}/ssh-keys'
         data = {'name': name, 'ssh_key': key}
         data.update(kwargs)
-        return self._post(url, data)
+        return self._post(url, data)['ssh_key']
 
     def list_instances(self):
         url = f'{self.url}/instances'
@@ -76,7 +76,7 @@ class Vultr(object):
         url = f'{self.url}/instances'
         data = {'region': region, 'plan': plan}
         data.update(kwargs)
-        return self._post(url, data)
+        return self._post(url, data)['instance']
 
     def delete_instance(self, instance_id: str):
         url = f'{self.url}/instances/{instance_id}'
