@@ -1,16 +1,18 @@
 import requests
+from typing import Optional
 
 
 class Vultr(object):
     url = 'https://api.vultr.com/v2'
 
-    def __init__(self, api_token: str):
+    def __init__(self, api_token: Optional[str] = None):
         """
         :param str api_token: Vultr API Token
         """
         self.token = api_token
         self.s = requests.session()
-        self.s.headers.update({'Authorization': f'Bearer {api_token}'})
+        if api_token:
+            self.s.headers.update({'Authorization': f'Bearer {api_token}'})
 
     def _get(self, url):
         r = self.s.get(url, timeout=10)
