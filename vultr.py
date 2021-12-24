@@ -26,6 +26,12 @@ class Vultr(object):
             r.raise_for_status()
         return r.json()
 
+    def _patch(self, url, data):
+        r = self.s.patch(url, json=data, timeout=10)
+        if not r.ok:
+            r.raise_for_status()
+        return r.json()
+
     def _delete(self, url):
         r = self.s.delete(url, timeout=10)
         if not r.ok:
@@ -77,6 +83,10 @@ class Vultr(object):
         data = {'region': region, 'plan': plan}
         data.update(kwargs)
         return self._post(url, data)['instance']
+
+    def update_instance(self, instance_id: str, **kwargs):
+        url = f'{self.url}/instances/{instance_id}'
+        return self._patch(url, kwargs)['instance']
 
     def delete_instance(self, instance_id: str):
         url = f'{self.url}/instances/{instance_id}'
