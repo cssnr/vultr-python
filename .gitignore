@@ -1,5 +1,5 @@
 .idea/
 *.iml
 *.egg-info/
-build/
+dist/
 .coverage
