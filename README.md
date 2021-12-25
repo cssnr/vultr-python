@@ -8,7 +8,7 @@ Python wrapper for the Vultr API.
 *   [https://www.vultr.com](https://www.vultr.com/?ref=6905748)
 *   [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
-This is currently a WIP and not complete, but has some functions.
+This is currently a WIP and not complete, but has some functions. Feel free to request additional functions in [Discord](https://discord.gg/wXy6m2X8wY).
 
 ## Examples
 
