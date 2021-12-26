@@ -1,5 +1,6 @@
 .idea/
 *.iml
 *.egg-info/
+venv/
 dist/
 .coverage

@@ -11,6 +11,20 @@ Python wrapper for the Vultr API.
 
 This is currently a WIP and not complete, but has some functions. Feel free to request additional functions in [Discord](https://discord.gg/wXy6m2X8wY).
 
+## Installing
+
+From PyPi:
+```text
+python -m pip install vultr-python
+```
+
+From Source:
+```text
+git clone https://github.com/cssnr/vultr-python.git
+cd vultr-python
+python -m pip install -U .
+```
+
 ## Examples
 
 You will need to create a token and whitelist your IP address.
@@ -54,4 +68,8 @@ data = {
 instance = vultr.create_instance(**data)
 ```
 
+Browse all available functions in the [vultr.py](vultr.py) file.
+
 View the full documentation here: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
+
+Get support, request improvements, report bugs and much more on [Discord](https://discord.gg/wXy6m2X8wY).
