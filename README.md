@@ -4,39 +4,41 @@
 [![](https://repository-images.githubusercontent.com/441314848/513fb2f4-39cb-4bbc-8d47-a2cde9ccbd65)](https://www.vultr.com/?ref=6905748)
 # Vultr Python
 
-Python wrapper for the Vultr API.
+Python 3 wrapper for the Vultr API v2.
 
-*   [https://www.vultr.com](https://www.vultr.com/?ref=6905748)
-*   [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
+*   Vultr: [https://www.vultr.com](https://www.vultr.com/?ref=6905748)
+*   Vultr API: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
+*   Vultr Python Docs: [https://vultr-python.sapps.me](https://vultr-python.sapps.me/)
 
-This is currently a WIP and not complete, but has some functions. Feel free to request additional functions in [Discord](https://discord.gg/wXy6m2X8wY).
+This is currently a WIP and not complete, but has some useful functions.
+Feel free to request additional functions and more on [Discord](https://discord.gg/wXy6m2X8wY).
 
-## Installing
+## Install
 
-From PyPi:
+From PyPi using pip:
 ```text
 python -m pip install vultr-python
 ```
 
-From Source:
+From Source using setuptools:
 ```text
 git clone https://github.com/cssnr/vultr-python.git
 cd vultr-python
-python -m pip install -U .
+python setup.py install
 ```
 
-## Examples
+## Usage
 
-You will need to create a token and whitelist your IP address.
-Most functions do not work without an API Token.
+You will need to create an api key and whitelist your IP address.
+Most functions do not work without an API Key.
 
 *   [https://my.vultr.com/settings/#settingsapi](https://my.vultr.com/settings/#settingsapi)
 
-Initialize the class with your API Token
+Initialize the class with your API Key or with the `VULTR_API_KEY` environment variable.
 ```python
 from vultr import Vultr
 
-vultr = Vultr('APIKEY')
+vultr = Vultr('VULTR_API_KEY')
 ```
 List plans and get available regions for that plan
 ```python
@@ -68,8 +70,8 @@ data = {
 instance = vultr.create_instance(**data)
 ```
 
-Browse all available functions in the [vultr.py](vultr.py) file.
+View all functions at the Doc site: [https://vultr-python.sapps.me](https://vultr-python.sapps.me/)
 
-View the full documentation here: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
+View the full API documentation at Vultr: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
-Get support, request improvements, report bugs and much more on [Discord](https://discord.gg/wXy6m2X8wY).
+Still have questions, concerns, or comments? Join our [Discord](https://discord.gg/wXy6m2X8wY) for more information...
