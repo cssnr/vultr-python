@@ -32,7 +32,7 @@ class Vultr(object):
         return self._get(url)['instances']
 
     def get_instance(self, instance: Union[str, dict]):
-        instance_id = self._get_object_value(instance)
+        instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}'
         return self._get(url)['instance']
 
@@ -43,12 +43,12 @@ class Vultr(object):
         return self._post(url, data)['instance']
 
     def update_instance(self, instance: Union[str, dict], **kwargs):
-        instance_id = self._get_object_value(instance)
+        instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}'
         return self._patch(url, kwargs)['instance']
 
     def delete_instance(self, instance: Union[str, dict]):
-        instance_id = self._get_object_value(instance)
+        instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}'
         return self._delete(url)
 
@@ -57,7 +57,7 @@ class Vultr(object):
         return self._get(url)['ssh_keys']
 
     def get_key(self, key: Union[str, dict]):
-        key_id = self._get_object_value(key)
+        key_id = self._get_obj_key(key)
         url = f'{self.url}/ssh-keys/{key_id}'
         return self._get(url)['ssh_key']
 
@@ -68,12 +68,12 @@ class Vultr(object):
         return self._post(url, data)['ssh_key']
 
     def update_key(self, key: Union[str, dict], **kwargs):
-        key_id = self._get_object_value(key)
+        key_id = self._get_obj_key(key)
         url = f'{self.url}/ssh-keys/{key_id}'
         return self._patch(url, kwargs)['ssh_key']
 
     def delete_key(self, key: Union[str, dict]):
-        key_id = self._get_object_value(key)
+        key_id = self._get_obj_key(key)
         url = f'{self.url}/ssh-keys/{key_id}'
         return self._delete(url)
 
@@ -82,7 +82,7 @@ class Vultr(object):
         return self._get(url)['startup_scripts']
 
     def get_script(self, script: Union[str, dict]):
-        script_id = self._get_object_value(script)
+        script_id = self._get_obj_key(script)
         url = f'{self.url}/startup-scripts/{script_id}'
         return self._get(url)['startup_script']
 
@@ -93,12 +93,12 @@ class Vultr(object):
         return self._post(url, data)['startup_script']
 
     def update_script(self, script: Union[str, dict], **kwargs):
-        script_id = self._get_object_value(script)
+        script_id = self._get_obj_key(script)
         url = f'{self.url}/startup-scripts/{script_id}'
         return self._patch(url, kwargs)['startup_script']
 
     def delete_script(self, script: Union[str, dict]):
-        script_id = self._get_object_value(script)
+        script_id = self._get_obj_key(script)
         url = f'{self.url}/startup-scripts/{script_id}'
         return self._delete(url)
 
@@ -152,13 +152,13 @@ class Vultr(object):
         return None
 
     @staticmethod
-    def _get_object_value(obj, value='id'):
+    def _get_obj_key(obj, key='id'):
         if isinstance(obj, str):
             return obj
         elif isinstance(obj, int):
             return str(obj)
         elif isinstance(obj, dict):
-            if value in obj:
-                return obj[value]
+            if key in obj:
+                return obj[key]
         else:
-            raise ValueError(f'Unable to parse object: {value}')
+            raise ValueError(f'Unable to parse object: {key}')

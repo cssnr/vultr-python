@@ -54,7 +54,7 @@ ubuntu_lts = vultr.filter_os(os_list, 'Ubuntu 20.04 x64')
 ```
 Create a new ssh key from key string
 ```python
-sshkey = vultr.create_key('shane-secure-102916', 'ssh-rsa AAAA...')
+sshkey = vultr.create_key('key-name', 'ssh-rsa AAAA...')
 ```
 Create a new instance
 ```python
@@ -74,4 +74,4 @@ View all functions at the Doc site: [https://vultr-python.sapps.me](https://vult
 
 View the full API documentation at Vultr: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
-Still have questions, concerns, or comments? Join our [Discord](https://discord.gg/wXy6m2X8wY) for more information...
+If you have more questions, concerns, or comments? Join our [Discord](https://discord.gg/wXy6m2X8wY) for more information...
