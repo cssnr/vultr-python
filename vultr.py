@@ -102,6 +102,21 @@ class Vultr(object):
         url = f'{self.url}/startup-scripts/{script_id}'
         return self._delete(url)
 
+    def list_ipv4(self, instance: Union[str, dict]):
+        instance_id = self._get_obj_key(instance)
+        url = f'{self.url}/instances/{instance_id}/ipv4'
+        return self._get(url)['ipv4s']
+
+    def create_ipv4(self, instance: Union[str, dict], **kwargs):
+        instance_id = self._get_obj_key(instance)
+        url = f'{self.url}/instances/{instance_id}/ipv4'
+        return self._post(url, kwargs)['ipv4']
+
+    def delete_ipv4(self, instance: Union[str, dict]):
+        instance_id = self._get_obj_key(instance)
+        url = f'{self.url}/instances/{instance_id}/ipv4'
+        return self._delete(url)
+
     @staticmethod
     def filter_keys(keys: list, name: str) -> dict:
         try:
