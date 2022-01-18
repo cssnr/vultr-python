@@ -63,7 +63,7 @@ data = {
     'region': available[0]['id'],
     'plan': plan['id'],
     'os_id': ubuntu_lts['id'],
-    'sshkey_id': sshkey['id'],
+    'sshkey_id': [sshkey['id']],
     'hostname': hostname,
     'label': hostname,
 }

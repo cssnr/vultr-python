@@ -7,7 +7,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setup(
     name='vultr-python',
-    version='0.1.4',
+    version='0.1.5',
     description='Python 3 wrapper for the Vultr API v2.0',
     long_description=long_description,
     long_description_content_type="text/markdown",
