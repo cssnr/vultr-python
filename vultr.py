@@ -21,7 +21,7 @@ class Vultr(object):
 
     def list_plans(self, **kwargs):
         url = f'{self.url}/plans'
-        return self._get(url, params=kwargs).json()['plans']
+        return self._get(url, kwargs).json()['plans']
 
     def list_regions(self):
         url = f'{self.url}/regions'
@@ -29,7 +29,7 @@ class Vultr(object):
 
     def list_instances(self, **kwargs):
         url = f'{self.url}/instances'
-        return self._get(url, params=kwargs).json()['instances']
+        return self._get(url, kwargs).json()['instances']
 
     def get_instance(self, instance: Union[str, dict]):
         instance_id = self._get_obj_key(instance)
@@ -129,7 +129,7 @@ class Vultr(object):
     def list_ipv4(self, instance: Union[str, dict], **kwargs):
         instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}/ipv4'
-        return self._get(url, params=kwargs).json()['ipv4s']
+        return self._get(url, kwargs).json()['ipv4s']
 
     def create_ipv4(self, instance: Union[str, dict], **kwargs):
         instance_id = self._get_obj_key(instance)
