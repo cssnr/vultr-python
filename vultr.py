@@ -42,6 +42,25 @@ class Vultr(object):
         url = f'{self.url}/instances'
         return self._post(url, data)['instance']
 
+    def create_instances(self, region: str, plan: str,
+                         instances: Optional[int] = 1,
+                         hostname_ai: Optional[str] = None,
+                         label_ai: Optional[str] = None, **kwargs):
+        results = []
+        for i in range(1, instances + 1):
+            data = dict()
+            if hostname_ai:
+                data.update({'hostname': f'{hostname_ai}{i:02}'})
+            if label_ai:
+                data.update({'label': f'{label_ai}{i:02}'})
+            data.update(kwargs)
+            try:
+                instance = self.create_instance(region, plan, **data)
+                results.append(instance)
+            except Exception as error:
+                results.append(error)
+        return results
+
     def update_instance(self, instance: Union[str, dict], **kwargs):
         instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}'
