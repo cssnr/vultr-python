@@ -17,36 +17,36 @@ class Vultr(object):
 
     def list_os(self):
         url = f'{self.url}/os'
-        return self._get(url)['os']
+        return self._get(url).json()['os']
 
-    def list_plans(self):
+    def list_plans(self, **kwargs):
         url = f'{self.url}/plans'
-        return self._get(url)['plans']
+        return self._get(url, params=kwargs).json()['plans']
 
     def list_regions(self):
         url = f'{self.url}/regions'
-        return self._get(url)['regions']
+        return self._get(url).json()['regions']
 
-    def list_instances(self):
+    def list_instances(self, **kwargs):
         url = f'{self.url}/instances'
-        return self._get(url)['instances']
+        return self._get(url, params=kwargs).json()['instances']
 
     def get_instance(self, instance: Union[str, dict]):
         instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}'
-        return self._get(url)['instance']
+        return self._get(url).json()['instance']
 
     def create_instance(self, region: str, plan: str, **kwargs):
         data = {'region': region, 'plan': plan}
         data.update(kwargs)
         url = f'{self.url}/instances'
-        return self._post(url, data)['instance']
+        return self._post(url, data).json()['instance']
 
     def create_instances(self, region: str, plan: str,
                          instances: Optional[int] = 1,
                          hostname_ai: Optional[str] = None,
                          label_ai: Optional[str] = None, **kwargs):
-        results = []
+        results = list()
         for i in range(1, instances + 1):
             data = dict()
             if hostname_ai:
@@ -64,32 +64,37 @@ class Vultr(object):
     def update_instance(self, instance: Union[str, dict], **kwargs):
         instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}'
-        return self._patch(url, kwargs)['instance']
+        return self._patch(url, kwargs).json()['instance']
 
     def delete_instance(self, instance: Union[str, dict]):
         instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}'
         return self._delete(url)
 
+    def reboot_instance(self, instance: Union[str, dict]):
+        instance_id = self._get_obj_key(instance)
+        url = f'{self.url}/instances/{instance_id}/reboot'
+        return self._post(url)
+
     def list_keys(self):
         url = f'{self.url}/ssh-keys'
-        return self._get(url)['ssh_keys']
+        return self._get(url).json()['ssh_keys']
 
     def get_key(self, key: Union[str, dict]):
         key_id = self._get_obj_key(key)
         url = f'{self.url}/ssh-keys/{key_id}'
-        return self._get(url)['ssh_key']
+        return self._get(url).json()['ssh_key']
 
     def create_key(self, name: str, key: str, **kwargs):
         data = {'name': name, 'ssh_key': key}
         data.update(kwargs)
         url = f'{self.url}/ssh-keys'
-        return self._post(url, data)['ssh_key']
+        return self._post(url, data).json()['ssh_key']
 
     def update_key(self, key: Union[str, dict], **kwargs):
         key_id = self._get_obj_key(key)
         url = f'{self.url}/ssh-keys/{key_id}'
-        return self._patch(url, kwargs)['ssh_key']
+        return self._patch(url, kwargs).json()['ssh_key']
 
     def delete_key(self, key: Union[str, dict]):
         key_id = self._get_obj_key(key)
@@ -98,38 +103,38 @@ class Vultr(object):
 
     def list_scripts(self):
         url = f'{self.url}/startup-scripts'
-        return self._get(url)['startup_scripts']
+        return self._get(url).json()['startup_scripts']
 
     def get_script(self, script: Union[str, dict]):
         script_id = self._get_obj_key(script)
         url = f'{self.url}/startup-scripts/{script_id}'
-        return self._get(url)['startup_script']
+        return self._get(url).json()['startup_script']
 
     def create_script(self, name: str, script: str, **kwargs):
         data = {'name': name, 'script': script}
         data.update(kwargs)
         url = f'{self.url}/startup-scripts'
-        return self._post(url, data)['startup_script']
+        return self._post(url, data).json()['startup_script']
 
     def update_script(self, script: Union[str, dict], **kwargs):
         script_id = self._get_obj_key(script)
         url = f'{self.url}/startup-scripts/{script_id}'
-        return self._patch(url, kwargs)['startup_script']
+        return self._patch(url, kwargs).json()['startup_script']
 
     def delete_script(self, script: Union[str, dict]):
         script_id = self._get_obj_key(script)
         url = f'{self.url}/startup-scripts/{script_id}'
         return self._delete(url)
 
-    def list_ipv4(self, instance: Union[str, dict]):
+    def list_ipv4(self, instance: Union[str, dict], **kwargs):
         instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}/ipv4'
-        return self._get(url)['ipv4s']
+        return self._get(url, params=kwargs).json()['ipv4s']
 
     def create_ipv4(self, instance: Union[str, dict], **kwargs):
         instance_id = self._get_obj_key(instance)
         url = f'{self.url}/instances/{instance_id}/ipv4'
-        return self._post(url, kwargs)['ipv4']
+        return self._post(url, kwargs).json()['ipv4']
 
     def delete_ipv4(self, instance: Union[str, dict]):
         instance_id = self._get_obj_key(instance)
@@ -161,23 +166,23 @@ class Vultr(object):
     def filter_regions(regions: list, locations: list) -> list:
         return [d for d in regions if d['id'] in locations]
 
-    def _get(self, url):
-        r = self.s.get(url, timeout=10)
+    def _get(self, url, params=None):
+        r = self.s.get(url, params=params, timeout=10)
         if not r.ok:
             r.raise_for_status()
-        return r.json()
+        return r
 
-    def _post(self, url, data):
-        r = self.s.post(url, json=data, timeout=10)
+    def _post(self, url, json=None):
+        r = self.s.post(url, json=json, timeout=10)
         if not r.ok:
             r.raise_for_status()
-        return r.json()
+        return r
 
-    def _patch(self, url, data):
-        r = self.s.patch(url, json=data, timeout=10)
+    def _patch(self, url, json=None):
+        r = self.s.patch(url, json=json, timeout=10)
         if not r.ok:
             r.raise_for_status()
-        return r.json()
+        return r
 
     def _delete(self, url):
         r = self.s.delete(url, timeout=10)
