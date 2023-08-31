@@ -1,7 +1,9 @@
 .idea/
 *.iml
+.vscode/
+dist/
+_site/
+venv/
 **/__pycache__/
 *.egg-info/
-venv/
-dist/
 .coverage

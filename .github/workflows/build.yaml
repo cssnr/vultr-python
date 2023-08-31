@@ -1,0 +1,41 @@
+name: "GitHub Pages"
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+  push:
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - name: "Setup Python"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: "Build"
+        run: |
+          python -m pip install -U pip
+          python -m build
+
+      - name: "Debug"
+        run: |
+          echo ----------
+          ls -a
+          echo ----------
+          ls -laH dist/
+          echo ----------
+
+#      - name: "Upload Artifact"
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: vultr-python
+#          path: build/

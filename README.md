@@ -8,7 +8,7 @@ Python 3 wrapper for the Vultr API v2.
 
 *   Vultr: [https://www.vultr.com](https://www.vultr.com/?ref=6905748)
 *   Vultr API: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
-*   Vultr Python Docs: [https://vultr-python.sapps.me](https://vultr-python.sapps.me/)
+*   Vultr Python Docs: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python)
 
 This is currently a WIP and not complete, but has some useful functions.
 Feel free to request additional functions and more on [Discord](https://discord.gg/wXy6m2X8wY).
@@ -70,7 +70,7 @@ data = {
 instance = vultr.create_instance(**data)
 ```
 
-View all functions at the Doc site: [https://vultr-python.sapps.me](https://vultr-python.sapps.me/)
+View all functions at the Doc site: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python)
 
 View the full API documentation at Vultr: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 

@@ -1,0 +1,64 @@
+name: "GitHub Pages"
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - webhook
+  push:
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - name: "Setup Python"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: "Build Docs"
+        run: |
+          python -m pip install -U pip
+          python -m pip install -U pydoc
+          python -m pdoc -o _site vultr.py
+
+      - name: "Update Permissions"
+        run: |
+          chmod -c -R +rX "build/" | while read line; do
+            echo "::warning title=Invalid file permissions automatically fixed::$line"
+          done
+
+      - name: "Upload Pages Artifact"
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: build/
+
+  deploy:
+    name: "Deploy"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: "Configure Pages"
+        uses: actions/configure-pages@v3
+
+      - name: "Deploy Pages"
+        id: deployment
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: github-pages

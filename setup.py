@@ -21,7 +21,7 @@ setup(
     zip_safe=False,
     platforms='any',
     project_urls={
-        'Documentation': 'https://vultr-python.sapps.me/',
+        'Documentation': 'https://cssnr.github.io/vultr-python',
         'Source': 'https://github.com/cssnr/vultr-python',
     },
     classifiers=[
