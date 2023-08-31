@@ -1,11 +1,12 @@
 name: "GitHub Pages"
 
 on:
+  push:
+    branches: ["master"]
   workflow_dispatch:
   repository_dispatch:
     types:
       - webhook
-  push:
 
 jobs:
   build:
