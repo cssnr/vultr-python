@@ -48,8 +48,7 @@ jobs:
         run: |
           python -m pip install -U pip
           python -m pip install -U pdoc
-          #python -m pip install --group dev
-          python -m pip install .
+          python -m pip install -e .
           python -m pdoc -t docs -o "${{ inputs.path }}" \
             --favicon "${{ env.logo }}" \
             --logo "${{ env.logo }}" \
