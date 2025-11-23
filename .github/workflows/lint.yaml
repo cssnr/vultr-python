@@ -66,7 +66,6 @@ jobs:
           python -m pip list
 
       - name: "Debug"
-        if: ${{ !github.event.act }}
         continue-on-error: true
         run: |
           python -V

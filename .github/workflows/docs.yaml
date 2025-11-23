@@ -12,6 +12,10 @@ on:
         type: string
         default: site
 
+env:
+  logo: "https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/vultr-python/logo128.png"
+  link: ${{ github.event.repository.html_url }}
+
 jobs:
   build:
     name: "Build"
@@ -21,6 +25,18 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v5
+
+      - name: "Debug CTX github"
+        continue-on-error: true
+        env:
+          GITHUB_CTX: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CTX"
+
+      - name: "Debug"
+        continue-on-error: true
+        run: |
+          echo "logo: ${{ env.logo }}"
+          echo "link: ${{ env.link }}"
 
       - name: "Setup Python 3.13"
         uses: actions/setup-python@v6
@@ -33,12 +49,16 @@ jobs:
           python -m pip install -U pip
           python -m pip install -U pdoc
           python -m pip install --group dev
-          python -m pdoc -o "${{ inputs.path }}" -t docs src/vultr/vultr.py
+          python -m pdoc -t docs -o "${{ inputs.path }}" \
+            --favicon "${{ env.logo }}" \
+            --logo "${{ env.logo }}" \
+            --logo-link "${{ env.link }}" \
+            vultr
 
       - name: "Update Permissions"
         run: |
-          chmod -c -R +rX "${{ inputs.path }}" | while read line; do
-            echo "::notice::Fixed invalid file permissions: ${line}"
+          chmod -c -R +rX "${{ inputs.path }}" | while read name; do
+            echo "::notice::Fixed invalid file permissions: ${name}"
           done
 
       - name: "List Artifacts"

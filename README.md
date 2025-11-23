@@ -19,9 +19,11 @@
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
-[![](https://repository-images.githubusercontent.com/441314848/513fb2f4-39cb-4bbc-8d47-a2cde9ccbd65)](https://www.vultr.com/?ref=6905748)
 
 # Vultr Python
+
+<a title="Vultr Python" href="https://cssnr.github.io/vultr-python" target="_blank">
+<img alt="Vultr Python" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/vultr-python/logo128.png"></a>
 
 - [Install](#Install)
 - [Usage](#Usage)
