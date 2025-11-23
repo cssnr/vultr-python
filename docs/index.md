@@ -1,0 +1,88 @@
+[![PyPI Version](https://img.shields.io/pypi/v/vultr-python?logo=pypi&logoColor=white&label=pypi)](https://pypi.org/project/vultr-python/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/vultr-python?logo=pypi&logoColor=white)](https://pypistats.org/packages/vultr-python)
+[![Pepy Total Downloads](https://img.shields.io/pepy/dt/vultr-python?logo=pypi&logoColor=white&label=total)](https://clickpy.clickhouse.com/dashboard/vultr-python)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/9b356c4327df41e395c81de1c717ce11)](https://app.codacy.com/gh/cssnr/vultr-python/dashboard)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_vultr-python&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_vultr-python)
+[![GitHub Contributors](https://img.shields.io/github/contributors-anon/cssnr/vultr-python?logo=github)](https://github.com/cssnr/vultr-python/graphs/contributors)
+[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/vultr-python?logo=github)](https://github.com/cssnr/vultr-python/discussions)
+[![GitHub Forks](https://img.shields.io/github/forks/cssnr/vultr-python?style=flat&logo=github)](https://github.com/cssnr/vultr-python/forks)
+[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/vultr-python?style=flat&logo=github)](https://github.com/cssnr/vultr-python/stargazers)
+[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&label=org%20stars)](https://cssnr.github.io/)
+[![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
+
+Python 3 wrapper for the [Vultr API v2](https://www.vultr.com/api/?ref=6905748).
+
+[Jump to the API Documentation](#Vultr)
+
+## Install
+
+From PyPi: https://pypi.org/project/vultr-python
+
+```text
+python -m pip install vultr-python
+```
+
+From Source:
+
+```text
+git clone https://github.com/cssnr/vultr-python.git
+python -m pip install vultr-python
+```
+
+## Usage
+
+You will need to create an api key and whitelist your IP address.
+
+- [https://my.vultr.com/settings/#settingsapi](https://my.vultr.com/settings/#settingsapi)
+
+Initialize the class with your API Key or with the `VULTR_API_KEY` environment variable.
+
+```python
+from vultr import Vultr
+
+vultr = Vultr('VULTR_API_KEY')
+```
+
+List plans and get available regions for that plan
+
+```python
+plans = vultr.list_plans()
+plan = plans[0]  # 0 seems to be the basic 5 dollar plan
+regions = vultr.list_regions()
+available = vultr.filter_regions(regions, plan['locations'])
+```
+
+Get the OS list and filter by name
+
+```python
+os_list = vultr.list_os()
+ubuntu_lts = vultr.filter_os(os_list, 'Ubuntu 20.04 x64')
+```
+
+Create a new ssh key from key string
+
+```python
+sshkey = vultr.create_key('key-name', 'ssh-rsa AAAA...')
+```
+
+Create a new instance
+
+```python
+hostname = 'my-new-host'
+data = {
+    'region': available[0]['id'],
+    'plan': plan['id'],
+    'os_id': ubuntu_lts['id'],
+    'sshkey_id': [sshkey['id']],
+    'hostname': hostname,
+    'label': hostname,
+}
+instance = vultr.create_instance(**data)
+```
+
+&nbsp;
+
+Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
+
+---

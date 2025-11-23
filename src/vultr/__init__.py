@@ -1,7 +1,5 @@
 """
-..  include:: ../../README.md
-    :start-line: 41
-    :end-line: 109
+..  include:: ../../docs/index.md
 """
 
 from .vultr import Vultr
