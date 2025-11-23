@@ -16,4 +16,3 @@ coverage.xml
 site/
 .cache/
 # App
-_site/
