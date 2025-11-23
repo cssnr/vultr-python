@@ -17,7 +17,7 @@ Python 3 wrapper for the [Vultr API v2](https://www.vultr.com/api/?ref=6905748).
 
 ## Install
 
-From PyPi: https://pypi.org/project/vultr-python
+From PyPi: <https://pypi.org/project/vultr-python>
 
 ```text
 python -m pip install vultr-python

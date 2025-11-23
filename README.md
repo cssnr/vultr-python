@@ -38,11 +38,12 @@ Python 3 wrapper for the Vultr API v2.
 
 > [!TIP]  
 > This project is not complete, but has many useful functions.  
-> Please submit a [Feature Request](https://github.com/cssnr/vultr-python/discussions/categories/feature-requests) or report any [Issues](https://github.com/cssnr/vultr-python/issues).
+> Please submit a [Feature Request](https://github.com/cssnr/vultr-python/discussions/categories/feature-requests)
+> or report any [Issues](https://github.com/cssnr/vultr-python/issues).
 
 ## Install
 
-From PyPi: https://pypi.org/project/vultr-python
+From PyPi: <https://pypi.org/project/vultr-python>
 
 ```text
 python -m pip install vultr-python
@@ -115,15 +116,15 @@ View the Vultr API documentation at: [https://www.vultr.com/api](https://www.vul
 
 For general help or to request a feature, see:
 
-- Q&A Discussion: https://github.com/cssnr/vultr-python/discussions/categories/q-a
-- Request a Feature: https://github.com/cssnr/vultr-python/discussions/categories/feature-requests
-- Chat with us on Discord: https://discord.gg/wXy6m2X8wY
+- Q&A Discussion: <https://github.com/cssnr/vultr-python/discussions/categories/q-a>
+- Request a Feature: <https://github.com/cssnr/vultr-python/discussions/categories/feature-requests>
+- Chat with us on Discord: <https://discord.gg/wXy6m2X8wY>
 
 If you are experiencing an issue/bug or getting unexpected results, you can:
 
-- Report an Issue: https://github.com/cssnr/vultr-python/issues
+- Report an Issue: <https://github.com/cssnr/vultr-python/issues>
 - Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=vultr-python)
-- Chat with us on Discord: https://discord.gg/wXy6m2X8wY
+- Chat with us on Discord: <https://discord.gg/wXy6m2X8wY>
 
 # Contributing
 
