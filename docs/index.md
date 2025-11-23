@@ -13,9 +13,10 @@
 
 Python 3 wrapper for the [Vultr API v2](https://www.vultr.com/api/?ref=6905748).
 
-[![GitHub](https://img.shields.io/badge/github-232925?style=for-the-badge&logo=github)](https://github.com/cssnr/vultr-python)
+[![GitHub](https://img.shields.io/badge/github-232925?style=for-the-badge&logo=github)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
 [![PyPi](https://img.shields.io/badge/pypi-006dad?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/vultr-python)
-[![Docs](https://img.shields.io/badge/vultr-007bfc?style=for-the-badge&logo=vultr)](https://www.vultr.com/api/?ref=6905748)
+[![Docs](https://img.shields.io/badge/docs-198754?style=for-the-badge&logo=mdbook)](#Vultr)
+[![Vultr](https://img.shields.io/badge/vultr-007bfc?style=for-the-badge&logo=vultr)](https://www.vultr.com/api/?ref=6905748)
 
 [⬇️ Jump to the API Documentation](#Vultr)
 
