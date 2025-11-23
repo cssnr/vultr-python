@@ -45,8 +45,13 @@ jobs:
         env:
           path: ${{ inputs.path }}
         run: |
-          ls -lAh ${path}/*
-          results="$(ls -lAh ${path}/* | awk '{print $9" - "$5}')"
+          echo "::group::ls"
+          ls -lAhR "${path}"
+          echo "::endgroup::"
+          echo "::group::tree"
+          tree "${path}"
+          echo "::endgroup::"
+          results="$(tree "${path}")"
           markdown='Artifacts:\n```text\n'"${results}"'\n```'
           echo -e "${markdown}" >> $GITHUB_STEP_SUMMARY
 
