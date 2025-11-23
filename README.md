@@ -5,7 +5,6 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9b356c4327df41e395c81de1c717ce11)](https://app.codacy.com/gh/cssnr/vultr-python/dashboard)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_vultr-python&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_vultr-python)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/vultr-python/actions/workflows/lint.yaml)
-[![GitHub Deployments](https://img.shields.io/github/deployments/cssnr/vultr-python/pypi?logo=pypi&logoColor=white&label=pypi)](https://pypi.org/project/vultr-python/)
 [![GitHub Deployments](https://img.shields.io/github/deployments/cssnr/vultr-python/github-pages?logo=materialformkdocs&logoColor=white&label=github-pages)](https://cssnr.github.io/vultr-python)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/vultr-python?logo=github&label=updated)](https://github.com/cssnr/vultr-python/graphs/commit-activity)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/vultr-python?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/vultr-python)
@@ -30,14 +29,18 @@
 
 Python 3 wrapper for the Vultr API v2.
 
-- Vultr: [https://www.vultr.com](https://www.vultr.com/?ref=6905748)
-- Vultr API: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
-- Vultr Python Docs: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python)
+[![PyPi](https://img.shields.io/badge/pypi-006dad?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/vultr-python)
+[![Docs](https://img.shields.io/badge/docs-198754?style=for-the-badge&logo=mdbook)](https://cssnr.github.io/vultr-python)
+[![Vultr](https://img.shields.io/badge/vultr-007bfc?style=for-the-badge&logo=vultr)](https://www.vultr.com/api/?ref=6905748)
+
+Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
 > [!TIP]  
 > This project is not complete, but has many useful functions.  
 > Please submit a [Feature Request](https://github.com/cssnr/vultr-python/discussions/categories/feature-requests)
 > or report any [Issues](https://github.com/cssnr/vultr-python/issues).
+
+For more details visit [vultr.com](https://www.vultr.com/?ref=6905748) or checkout the [Vultr Pricing](https://www.vultr.com/pricing/).
 
 ## Install
 
@@ -106,9 +109,9 @@ data = {
 instance = vultr.create_instance(**data)
 ```
 
-View all functions on the documentation site: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python)
+Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python)
 
-View the Vultr API documentation at: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
+Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
 # Support
 

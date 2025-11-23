@@ -13,7 +13,11 @@
 
 Python 3 wrapper for the [Vultr API v2](https://www.vultr.com/api/?ref=6905748).
 
-[Jump to the API Documentation](#Vultr)
+[![GitHub](https://img.shields.io/badge/github-232925?style=for-the-badge&logo=github)](https://github.com/cssnr/vultr-python)
+[![PyPi](https://img.shields.io/badge/pypi-006dad?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/vultr-python)
+[![Docs](https://img.shields.io/badge/vultr-007bfc?style=for-the-badge&logo=vultr)](https://www.vultr.com/api/?ref=6905748)
+
+[⬇️ Jump to the API Documentation](#Vultr)
 
 ## Install
 
@@ -32,7 +36,7 @@ python -m pip install vultr-python
 
 ## Usage
 
-You will need to create an api key and whitelist your IP address.
+You will need to create an api key and whitelist your IP address. Most functions do not work without an API Key.
 
 - [https://my.vultr.com/settings/#settingsapi](https://my.vultr.com/settings/#settingsapi)
 
