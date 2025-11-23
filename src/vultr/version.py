@@ -10,4 +10,3 @@ def get_version() -> str:
 
 
 __version__ = get_version()
-
