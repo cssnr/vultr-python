@@ -1,11 +1,16 @@
-name: "Build"
+name: "Build Package"
 
 on:
-  workflow_dispatch:
-  release:
-    types: [published]
-  pull_request:
-    branches: ["master"]
+  workflow_call:
+    inputs:
+      name:
+        description: "Artifact Name"
+        type: string
+        required: true
+      path:
+        description: "Build Path"
+        type: string
+        default: dist
 
 jobs:
   build:
@@ -15,21 +20,60 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
-      - name: "Setup Python"
-        uses: actions/setup-python@v4
+      - name: "Debug event.json"
+        continue-on-error: true
+        run: cat "${GITHUB_EVENT_PATH}"
+
+      - name: "Debug CTX github"
+        continue-on-error: true
+        env:
+          GITHUB_CTX: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CTX"
+
+      #- name: "Debug Environment"
+      #  continue-on-error: true
+      #  run: env
+
+      - name: "Setup Python 3.13"
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: "Install"
+        run: |
+          python -m pip install -U pip
+          python -m pip install --group dev
 
       - name: "Build"
         run: |
-          python -m pip install -U pip
-          python -m pip install -U build
           python -m build
 
-      - name: "Upload Artifact"
-        uses: actions/upload-artifact@v3
+      - name: "List Artifacts"
+        env:
+          path: ${{ inputs.path }}
+        run: |
+          echo "::group::ls"
+          ls -lAhR "${path}"
+          echo "::endgroup::"
+          echo "::group::tree"
+          tree "${path}"
+          echo "::endgroup::"
+          results="$(tree "${path}")"
+          markdown='Artifacts:\n```text\n'"${results}"'\n```'
+          echo -e "${markdown}" >> $GITHUB_STEP_SUMMARY
+
+      - name: "Upload to Actions"
+        uses: actions/upload-artifact@v5
         with:
-          name: vultr-python
-          path: dist/
+          name: ${{ inputs.name }}
+          path: ${{ inputs.path }}
+
+      - name: "Send Failure Notification"
+        if: ${{ failure() }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}

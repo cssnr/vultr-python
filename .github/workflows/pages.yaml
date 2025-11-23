@@ -1,0 +1,46 @@
+name: "GitHub Pages"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/docs.yaml"
+      - ".github/workflows/pages.yaml"
+      - "docs/**"
+      - "src/**"
+
+jobs:
+  build:
+    name: "Build"
+    uses: ./.github/workflows/docs.yaml
+    secrets: inherit
+    permissions:
+      contents: read
+
+  deploy:
+    name: "Deploy"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: "Deploy Pages"
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: "Send Notification"
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: ${{ steps.deployment.outputs.page_url }}

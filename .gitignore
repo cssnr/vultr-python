@@ -1,9 +1,18 @@
+# Generic
 .idea/
 *.iml
 .vscode/
-dist/
-_site/
+.venv/
 venv/
-**/__pycache__/
+__pycache__/
 *.egg-info/
+build/
+dist/
+*.log
+*.pyc
 .coverage
+coverage.xml
+# Zensical
+site/
+.cache/
+# App
