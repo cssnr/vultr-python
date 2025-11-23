@@ -5,6 +5,7 @@ on:
   push:
     branches: [master]
     paths:
+      - ".github/workflows/docs.yaml"
       - ".github/workflows/pages.yaml"
       - "docs/**"
       - "src/**"
