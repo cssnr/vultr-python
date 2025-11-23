@@ -41,7 +41,7 @@ Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=
 > Please submit a [Feature Request](https://github.com/cssnr/vultr-python/discussions/categories/feature-requests)
 > or report any [Issues](https://github.com/cssnr/vultr-python/issues).
 
-For more details visit [vultr.com](https://www.vultr.com/?ref=6905748) or checkout the [Vultr Pricing](https://www.vultr.com/pricing/).
+For more details visit [www.vultr.com](https://www.vultr.com/?ref=6905748).
 
 ## Install
 

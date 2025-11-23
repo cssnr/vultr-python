@@ -11,7 +11,7 @@
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
 
-Python 3 wrapper for the [Vultr API v2](https://www.vultr.com/api/?ref=6905748).
+Python 3 wrapper for the [Vultr](https://www.vultr.com/?ref=6905748) API v2.
 
 [![GitHub](https://img.shields.io/badge/github-232925?style=for-the-badge&logo=github)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
 [![PyPi](https://img.shields.io/badge/pypi-006dad?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/vultr-python)
