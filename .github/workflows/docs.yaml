@@ -1,12 +1,16 @@
-name: "GitHub Pages"
+name: "Build Docs"
 
 on:
-  push:
-    branches: ["master"]
-  workflow_dispatch:
-  repository_dispatch:
-    types:
-      - webhook
+  workflow_call:
+    inputs:
+      name:
+        description: "Artifact Name"
+        type: string
+        default: github-pages
+      path:
+        description: "Build Path"
+        type: string
+        default: site
 
 jobs:
   build:
@@ -16,51 +20,54 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
-      - name: "Setup Python"
-        uses: actions/setup-python@v4
+      - name: "Setup Python 3.13"
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
+          python-version: "3.13"
+          cache: "pip"
 
       - name: "Build Docs"
         run: |
           python -m pip install -U pip
           python -m pip install -U pdoc
-          python -m pip install -Ur requirements.txt
-          python -m pdoc -o _site vultr.py
+          python -m pip install --group dev
+          python -m pdoc -o "${{ inputs.path }}" -t docs src/vultr/vultr.py
 
       - name: "Update Permissions"
         run: |
-          chmod -c -R +rX "_site/" | while read line; do
-            echo "::warning title=Invalid file permissions automatically fixed::$line"
+          chmod -c -R +rX "${{ inputs.path }}" | while read line; do
+            echo "::notice::Fixed invalid file permissions: ${line}"
           done
 
+      - name: "List Artifacts"
+        env:
+          path: ${{ inputs.path }}
+        run: |
+          ls -lAh ${path}/*
+          results="$(ls -lAh ${path}/* | awk '{print $9" - "$5}')"
+          markdown='Artifacts:\n```text\n'"${results}"'\n```'
+          echo -e "${markdown}" >> $GITHUB_STEP_SUMMARY
+
       - name: "Upload Pages Artifact"
-        uses: actions/upload-pages-artifact@v2
+        if: ${{ inputs.name == 'github-pages' }}
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: _site/
+          path: ${{ inputs.path }}
 
-  deploy:
-    name: "Deploy"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: build
-
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: "Configure Pages"
-        uses: actions/configure-pages@v3
-
-      - name: "Deploy Pages"
-        id: deployment
-        uses: actions/deploy-pages@v2
+      - name: "Upload Artifact"
+        if: ${{ inputs.name != 'github-pages' }}
+        uses: actions/upload-artifact@v5
         with:
-          artifact_name: github-pages
+          name: ${{ inputs.name }}
+          path: ${{ inputs.path }}
+          if-no-files-found: "error"
+          include-hidden-files: true
+
+      - name: "Send Failure Notification"
+        if: ${{ failure() }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}

@@ -1,0 +1,168 @@
+name: "Lint"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths-ignore:
+      - ".gitignore"
+      - ".prettierignore"
+      - "MANIFEST.in"
+      - "pyproject.toml"
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v5
+
+      - name: "Debug event.json"
+        continue-on-error: true
+        run: cat "${GITHUB_EVENT_PATH}"
+
+      - name: "Debug CTX github"
+        continue-on-error: true
+        env:
+          GITHUB_CTX: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CTX"
+
+      - name: "Debug Environment"
+        continue-on-error: true
+        run: env
+
+      #- name: "Check Changed Files"
+      #  id: changed
+      #  uses: tj-actions/changed-files@v47
+      #  with:
+      #    files: |
+      #      src/**
+      #      tests/**
+      #      pyproject.toml
+
+      - name: "Setup Python 3.13"
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: "Install"
+        id: install
+        run: |
+          python -m pip install -U pip
+          python -m pip install --group dev
+          python -m pip install -e .
+          python -m pip list
+
+      - name: "Debug"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        run: |
+          python -V
+          which python
+          echo "::group::pip list"
+          python -m pip list
+          echo "::endgroup::"
+
+      - name: "astral-sh/ruff"
+        if: ${{ !cancelled() }}
+        uses: astral-sh/ruff-action@v3
+        with:
+          version: latest
+
+      - name: "astral-sh/ty"
+        if: ${{ !cancelled() }}
+        run: |
+          ty check --python "$(which python)" -v
+
+      - name: "psf/black"
+        if: ${{ !cancelled() }}
+        uses: psf/black@stable
+
+      - name: "isort"
+        if: ${{ !cancelled() }}
+        uses: isort/isort-action@v1
+
+      - name: "mypy"
+        if: ${{ !cancelled() }}
+        run: |
+          mypy src
+
+      - name: "bandit"
+        if: ${{ !cancelled() }}
+        run: |
+          bandit -c pyproject.toml -r src
+
+      - name: "prettier"
+        if: ${{ !cancelled() }}
+        run: |
+          echo "::group::Install"
+          npm install prettier
+          echo "::endgroup::"
+          npx prettier --check .
+
+      - name: "yamllint"
+        if: ${{ !cancelled() }}
+        env:
+          CONFIG: "{extends: relaxed, ignore: [node_modules/], rules: {line-length: {max: 119}}}"
+        run: |
+          echo "::group::List Files"
+          yamllint -d '${{ env.CONFIG }}' --list-files .
+          echo "::endgroup::"
+          yamllint -d '${{ env.CONFIG }}' .
+
+      - name: "actionlint"
+        if: ${{ !cancelled() }}
+        run: |
+          echo "::group::Download"
+          loc=$(curl -sI https://github.com/rhysd/actionlint/releases/latest | grep -i '^location:')
+          echo "loc: ${loc}"
+          tag=$(echo "${loc}" | sed -E 's|.*/tag/v?(.*)|\1|' | tr -d '\t\r\n')
+          echo "tag: ${tag}"
+          url="https://github.com/rhysd/actionlint/releases/latest/download/actionlint_${tag}_linux_amd64.tar.gz"
+          echo "url: ${url}"
+          curl -sL "${url}" | tar xz -C "${RUNNER_TEMP}" actionlint
+          file "${RUNNER_TEMP}/actionlint"
+          "${RUNNER_TEMP}/actionlint" --version
+          echo "::endgroup::"
+          "${RUNNER_TEMP}/actionlint" -color -verbose -shellcheck= -pyflakes=
+
+      #- name: "pytest"
+      #  if: ${{ !cancelled() }}
+      #  id: coverage
+      #  run: |
+      #    coverage run -m pytest
+      #    coverage xml
+      #    coverage report -m
+
+      #- name: "codecov"
+      #  if: ${{ !cancelled() && steps.coverage.outcome == 'success' }}
+      #  uses: codecov/codecov-action@v5
+      #  with:
+      #    token: ${{ secrets.CODECOV_TOKEN }}
+
+      #- name: "hadolint"
+      #  if: ${{ !cancelled() }}
+      #  uses: hadolint/hadolint-action@v3.3.0
+      #  with:
+      #    dockerfile: Dockerfile
+
+      #- name: "Vale"
+      #  if: ${{ !cancelled() }}
+      #  uses: errata-ai/vale-action@v2.1.1
+
+      #- name: "SonarQube"
+      #  uses: SonarSource/sonarqube-scan-action@v4
+      #  env:
+      #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

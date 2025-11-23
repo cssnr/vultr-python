@@ -1,0 +1,43 @@
+name: "Preview"
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [master]
+    paths:
+      - ".github/workflows/preview.yaml"
+      - "docs/**"
+      - "src/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: "Build"
+    if: ${{ !contains(github.event.head_commit.message, '#nopreview') }}
+    uses: ./.github/workflows/docs.yaml
+    permissions:
+      contents: read
+    with:
+      name: artifact
+    secrets:
+      webhook: ${{ secrets.DISCORD_WEBHOOK }}
+
+  deploy:
+    name: "Deploy"
+    uses: cssnr/workflows/.github/workflows/deploy-static.yaml@master
+    needs: build
+    permissions:
+      contents: read
+    with:
+      name: "preview"
+      url: "https://dev-static.cssnr.com/"
+      robots: true
+    secrets:
+      host: ${{ secrets.DEV_DEPLOY_HOST }}
+      port: ${{ secrets.DEV_DEPLOY_PORT }}
+      user: ${{ secrets.DEV_DEPLOY_USER }}
+      pass: ${{ secrets.DEV_DEPLOY_PASS }}
+      webhook: ${{ secrets.DISCORD_WEBHOOK }}
