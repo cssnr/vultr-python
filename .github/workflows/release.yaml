@@ -159,6 +159,9 @@ jobs:
         uses: smashedr/update-release-notes-action@master
         with:
           location: tail
+          pypi: |
+            name: vultr-python
+            prerelease: ${{ github.event.release.prerelease }}
 
       - name: "Send Failure Notification"
         if: ${{ failure() }}

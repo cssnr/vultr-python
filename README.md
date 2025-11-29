@@ -86,7 +86,7 @@ Get the OS list and filter by name
 
 ```python
 os_list = vultr.list_os()
-ubuntu_lts = vultr.filter_os(os_list, 'Ubuntu 20.04 x64')
+ubuntu_lts = vultr.filter_os(os_list, 'Ubuntu 24.04 LTS x64')
 ```
 
 Create a new ssh key from key string

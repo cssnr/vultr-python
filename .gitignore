@@ -16,3 +16,4 @@ coverage.xml
 site/
 .cache/
 # App
+.secrets
