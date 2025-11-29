@@ -20,7 +20,7 @@
 # Vultr Python
 
 <a title="Vultr Python" href="https://cssnr.github.io/vultr-python" target="_blank">
-<img alt="Vultr Python" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/vultr-python/logo128.png"></a>
+<img alt="Vultr Python" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/vultr-python/refs/heads/master/.github/assets/logo.svg"></a>
 
 - [Install](#Install)
 - [Usage](#Usage)
@@ -108,6 +108,17 @@ data = {
     'label': hostname,
 }
 instance = vultr.create_instance(**data)
+```
+
+Arbitrary Methods `get`, `post`, `patch`, `delete`
+
+```python
+# vultr.list_instances()
+instances = vultr.get('instances')
+# vultr.create_key()
+sshkey = vultr.post('ssh-keys', {"name": 'key-name', "ssh_key": 'ssh-rsa AAAA...'})
+# vultr.delete_instance()
+vultr.delete(f"instances/019ad1a8-2aa3-7650-83d1-8520d65ed6af")
 ```
 
 Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python)

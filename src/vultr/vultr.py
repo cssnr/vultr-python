@@ -9,12 +9,24 @@ class Vultr(object):
 
     def __init__(self, api_key: Optional[str] = None):
         """
-        :param str api_key: Vultr API Key or VULTR_API_KEY environment variable
+        :param str api_key: Vultr API Key or VULTR_API_KEY Environment Variable
         """
         self.api_key = api_key or os.getenv("VULTR_API_KEY")
-        self.s = requests.session()
+        self._session = requests.session()
         if self.api_key:
-            self.s.headers.update({"Authorization": f"Bearer {self.api_key}"})
+            self._session.headers.update({"Authorization": f"Bearer {self.api_key}"})
+
+    def get(self, url: str):
+        return self._get(f"{self.url}/{url.lstrip('/')}")
+
+    def post(self, url: str, **kwargs):
+        return self._post(f"{self.url}/{url.lstrip('/')}", kwargs)
+
+    def patch(self, url: str, **kwargs):
+        return self._patch(f"{self.url}/{url.lstrip('/')}", kwargs)
+
+    def delete(self, url: str):
+        return self._delete(f"{self.url}/{url.lstrip('/')}")
 
     def list_os(self):
         url = f"{self.url}/os"
@@ -144,25 +156,25 @@ class Vultr(object):
         return [d for d in regions if d["id"] in locations]
 
     def _get(self, url):
-        r = self.s.get(url, timeout=10)
+        r = self._session.get(url, timeout=10)
         if not r.ok:
             r.raise_for_status()
         return r.json()
 
     def _post(self, url, data):
-        r = self.s.post(url, json=data, timeout=10)
+        r = self._session.post(url, json=data, timeout=10)
         if not r.ok:
             r.raise_for_status()
         return r.json()
 
     def _patch(self, url, data):
-        r = self.s.patch(url, json=data, timeout=10)
+        r = self._session.patch(url, json=data, timeout=10)
         if not r.ok:
             r.raise_for_status()
         return r.json()
 
     def _delete(self, url):
-        r = self.s.delete(url, timeout=10)
+        r = self._session.delete(url, timeout=10)
         if not r.ok:
             r.raise_for_status()
         return None

@@ -88,6 +88,17 @@ data = {
 instance = vultr.create_instance(**data)
 ```
 
+Arbitrary Methods `get`, `post`, `patch`, `delete`
+
+```python
+# vultr.list_instances()
+instances = vultr.get('instances')
+# vultr.create_key()
+sshkey = vultr.post('ssh-keys', {"name": 'key-name', "ssh_key": 'ssh-rsa AAAA...'})
+# vultr.delete_instance()
+vultr.delete(f"instances/019ad1a8-2aa3-7650-83d1-8520d65ed6af")
+```
+
 &nbsp;
 
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
