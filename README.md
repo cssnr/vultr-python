@@ -121,6 +121,8 @@ sshkey = vultr.post('ssh-keys', name='key-name', ssh_key='ssh-rsa AAAA...')
 vultr.delete(f"instances/019ad1a8-2aa3-7650-83d1-8520d65ed6af")
 ```
 
+These methods take the URI as the first argument, and data kwargs as the second.
+
 Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python)
 
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
