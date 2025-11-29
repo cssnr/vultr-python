@@ -1,8 +1,10 @@
 [![PyPI Version](https://img.shields.io/pypi/v/vultr-python?logo=pypi&logoColor=white&label=pypi)](https://pypi.org/project/vultr-python/)
+[![TOML Python Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fcssnr%2Fvultr-python%2Frefs%2Fheads%2Fmaster%2Fpyproject.toml&query=%24.project.requires-python&logo=python&logoColor=white&label=python)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/vultr-python?logo=pypi&logoColor=white)](https://pypistats.org/packages/vultr-python)
 [![Pepy Total Downloads](https://img.shields.io/pepy/dt/vultr-python?logo=pypi&logoColor=white&label=total)](https://clickpy.clickhouse.com/dashboard/vultr-python)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9b356c4327df41e395c81de1c717ce11)](https://app.codacy.com/gh/cssnr/vultr-python/dashboard)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_vultr-python&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_vultr-python)
+[![GitHub Issues](https://img.shields.io/github/issues/cssnr/vultr-python?logo=github)](https://github.com/cssnr/vultr-python/issues)
 [![GitHub Contributors](https://img.shields.io/github/contributors-anon/cssnr/vultr-python?logo=github)](https://github.com/cssnr/vultr-python/graphs/contributors)
 [![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/vultr-python?logo=github)](https://github.com/cssnr/vultr-python/discussions)
 [![GitHub Forks](https://img.shields.io/github/forks/cssnr/vultr-python?style=flat&logo=github)](https://github.com/cssnr/vultr-python/forks)
@@ -62,7 +64,7 @@ Get the OS list and filter by name
 
 ```python
 os_list = vultr.list_os()
-ubuntu_lts = vultr.filter_os(os_list, 'Ubuntu 20.04 x64')
+ubuntu_lts = vultr.filter_os(os_list, 'Ubuntu 24.04 LTS x64')
 ```
 
 Create a new ssh key from key string

@@ -48,7 +48,9 @@ Homepage = "https://cssnr.com/"
 Documentation = "https://cssnr.github.io/vultr-python"
 Source = "https://github.com/cssnr/vultr-python"
 Issues = "https://github.com/cssnr/vultr-python/issues"
+Changelog = "https://github.com/cssnr/vultr-python/releases"
 Funding = "https://ko-fi.com/cssnr"
+Discord = "https://discord.gg/wXy6m2X8wY"
 
 # Setup Tools
 #[tool.setuptools.package-data]
