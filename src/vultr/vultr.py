@@ -67,24 +67,24 @@ class Vultr(object):
 
     def list_os(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/os"
-        return self._req("get", url, params)["os"]
+        return self._req("get", url, params=params)["os"]
 
     def list_plans(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/plans"
-        return self._req("get", url, params)["plans"]
+        return self._req("get", url, params=params)["plans"]
 
     def list_regions(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/regions"
-        return self._req("get", url, params)["regions"]
+        return self._req("get", url, params=params)["regions"]
 
     def list_instances(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/instances"
-        return self._req("get", url, params)["instances"]
+        return self._req("get", url, params=params)["instances"]
 
     def get_instance(self, instance: Union[str, dict], params: Optional[dict] = None) -> dict:
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}"
-        return self._req("get", url, params)["instance"]
+        return self._req("get", url, params=params)["instance"]
 
     def create_instance(self, region: Union[str, dict], plan: Union[str, dict], **kwargs) -> dict:
         data = {"region": self._get_obj_key(region), "plan": self._get_obj_key(plan)}
@@ -104,12 +104,12 @@ class Vultr(object):
 
     def list_keys(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/ssh-keys"
-        return self._req("get", url, params)["ssh_keys"]
+        return self._req("get", url, params=params)["ssh_keys"]
 
     def get_key(self, key: Union[str, dict], params: Optional[dict] = None) -> dict:
         key_id = self._get_obj_key(key)
         url = f"{self.url}/ssh-keys/{key_id}"
-        return self._req("get", url, params)["ssh_key"]
+        return self._req("get", url, params=params)["ssh_key"]
 
     def create_key(self, name: str, key: str, **kwargs) -> dict:
         data = {"name": name, "ssh_key": key}
@@ -129,12 +129,12 @@ class Vultr(object):
 
     def list_scripts(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/startup-scripts"
-        return self._req("get", url, params)["startup_scripts"]
+        return self._req("get", url, params=params)["startup_scripts"]
 
     def get_script(self, script: Union[str, dict], params: Optional[dict] = None) -> dict:
         script_id = self._get_obj_key(script)
         url = f"{self.url}/startup-scripts/{script_id}"
-        return self._req("get", url, params)["startup_script"]
+        return self._req("get", url, params=params)["startup_script"]
 
     def create_script(self, name: str, script: str, **kwargs) -> dict:
         data = {"name": name, "script": script}
@@ -155,7 +155,7 @@ class Vultr(object):
     def list_ipv4(self, instance: Union[str, dict], params: Optional[dict] = None) -> list:
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}/ipv4"
-        return self._req("get", url, params)["ipv4s"]
+        return self._req("get", url, params=params)["ipv4s"]
 
     def create_ipv4(self, instance: Union[str, dict], **kwargs) -> dict:
         instance_id = self._get_obj_key(instance)
