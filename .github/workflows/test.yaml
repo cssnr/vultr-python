@@ -3,7 +3,7 @@ name: "Test"
 on:
   workflow_dispatch:
   push:
-    branches: [master]
+    #branches: [master]
     #paths: &paths
     paths:
       - ".github/workflows/test.yaml"
