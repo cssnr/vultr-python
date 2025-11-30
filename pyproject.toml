@@ -10,7 +10,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.06",
     "Programming Language :: Python :: 3.07",
     "Programming Language :: Python :: 3.08",
     "Programming Language :: Python :: 3.09",
