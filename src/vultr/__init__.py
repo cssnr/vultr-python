@@ -2,7 +2,7 @@
 ..  include:: ../../docs/index.md
 """
 
-from .vultr import Vultr
+from .vultr import Vultr, VultrException
 
 
-__all__ = ["Vultr"]
+__all__ = ["Vultr", "VultrException"]

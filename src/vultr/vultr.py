@@ -158,25 +158,25 @@ class Vultr(object):
     def _get(self, url, params: Optional[dict] = None):
         r = self._session.get(url, params=params, timeout=10)
         if not r.ok:
-            r.raise_for_status()
+            raise VultrException(r)
         return r.json()
 
     def _post(self, url, data):
         r = self._session.post(url, json=data, timeout=10)
         if not r.ok:
-            r.raise_for_status()
+            raise VultrException(r)
         return r.json()
 
     def _patch(self, url, data):
         r = self._session.patch(url, json=data, timeout=10)
         if not r.ok:
-            r.raise_for_status()
+            raise VultrException(r)
         return r.json()
 
     def _delete(self, url):
         r = self._session.delete(url, timeout=10)
         if not r.ok:
-            r.raise_for_status()
+            raise VultrException(r)
         return None
 
     @staticmethod
@@ -190,3 +190,16 @@ class Vultr(object):
                 return obj[key]
         else:
             raise ValueError(f"Unable to parse object: {key}")
+
+
+class VultrException(Exception):
+    def __init__(self, response: requests.Response):
+        try:
+            data = response.json()
+            error = data.get("error", response.text)
+        except ValueError:
+            error = response.text
+        status = response.status_code
+        self.error = error
+        self.status = status
+        super().__init__(f"Error {self.status}: {self.error}")
