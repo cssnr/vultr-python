@@ -26,10 +26,8 @@
 
   <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('processing:', globalThis.location)
       for (const el of document.querySelectorAll('a')) {
         if (el.host && el.host !== globalThis.location.host) {
-          console.log('el:', el)
           el.target = '_blank'
           el.rel = 'noopener'
         }

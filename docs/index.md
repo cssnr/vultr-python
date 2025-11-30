@@ -99,7 +99,6 @@ Error Handling
 ```python
 >>> instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", **data)
 Traceback (most recent call last):
-    ...
 vultr.vultr.VultrException: Error 400: Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.
 ```
 
@@ -122,3 +121,5 @@ except VultrException as error:
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
 ---
+
+<p style="font-size: 2em; font-weight: 300;">API Documentation</p>
