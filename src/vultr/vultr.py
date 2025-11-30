@@ -1,6 +1,6 @@
 import os
 import warnings
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 import requests
 
@@ -16,142 +16,156 @@ class Vultr(object):
         if self.api_key:
             self._session.headers.update({"Authorization": f"Bearer {self.api_key}"})
 
-    def get(self, url: str, params: Optional[dict] = None):
+    def get(self, url: str, params: Optional[dict] = None) -> Any:
         """
         GET Data
         :param url: Request URL. Example `/instances`
         :param params: Query Parameters Dictionary
         :return: Response Data
+        :raises: `VultrException`
         """
-        return self._get(f"{self.url}/{url.lstrip('/')}", params)
+        return self._req("get", f"{self.url}/{url.lstrip('/')}", params)
 
-    def post(self, url: str, **kwargs):
+    def post(self, url: str, **kwargs) -> Any:
         """
         POST Data
         :param url: Request URL. Example `/instances`
         :param kwargs: Request Data Keyword Arguments
         :return: Response Data
+        :raises: `VultrException`
         """
-        return self._post(f"{self.url}/{url.lstrip('/')}", kwargs)
+        return self._req("post", f"{self.url}/{url.lstrip('/')}", kwargs)
 
-    def patch(self, url: str, **kwargs):
+    def patch(self, url: str, **kwargs) -> Any:
         """
         PATCH Data
-        :param url: Request URL. Example `/instances/{resource_id}`
+        :param url: Request URL. Example `/instances/{instance-id}`
         :param kwargs: Request Data Keyword Arguments
         :return: Response Data
+        :raises: `VultrException`
         """
-        return self._patch(f"{self.url}/{url.lstrip('/')}", kwargs)
+        return self._req("patch", f"{self.url}/{url.lstrip('/')}", kwargs)
 
-    def delete(self, url: str):
+    def put(self, url: str, **kwargs) -> Any:
+        """
+        PUT Data
+        :param url: Request URL. Example `/instances/{instance-id}`
+        :param kwargs: Request Data Keyword Arguments
+        :return: Response Data
+        :raises: `VultrException`
+        """
+        return self._req("put", f"{self.url}/{url.lstrip('/')}", kwargs)
+
+    def delete(self, url: str) -> None:
         """
         DELETE a Resource
-        :param url: Request URL. Example `/instances/{resource_id}`
+        :param url: Request URL. Example `/instances/{instance-id}`
         :return: None
+        :raises: `VultrException`
         """
-        return self._delete(f"{self.url}/{url.lstrip('/')}")
+        return self._req("delete", f"{self.url}/{url.lstrip('/')}")
 
-    def list_os(self, params: Optional[dict] = None):
+    def list_os(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/os"
-        return self._get(url, params)["os"]
+        return self._req("get", url, params)["os"]
 
-    def list_plans(self, params: Optional[dict] = None):
+    def list_plans(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/plans"
-        return self._get(url, params)["plans"]
+        return self._req("get", url, params)["plans"]
 
-    def list_regions(self, params: Optional[dict] = None):
+    def list_regions(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/regions"
-        return self._get(url, params)["regions"]
+        return self._req("get", url, params)["regions"]
 
-    def list_instances(self, params: Optional[dict] = None):
+    def list_instances(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/instances"
-        return self._get(url, params)["instances"]
+        return self._req("get", url, params)["instances"]
 
-    def get_instance(self, instance: Union[str, dict], params: Optional[dict] = None):
+    def get_instance(self, instance: Union[str, dict], params: Optional[dict] = None) -> dict:
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}"
-        return self._get(url, params)["instance"]
+        return self._req("get", url, params)["instance"]
 
-    def create_instance(self, region: Union[str, dict], plan: Union[str, dict], **kwargs):
+    def create_instance(self, region: Union[str, dict], plan: Union[str, dict], **kwargs) -> dict:
         data = {"region": self._get_obj_key(region), "plan": self._get_obj_key(plan)}
         data.update(kwargs)
         url = f"{self.url}/instances"
-        return self._post(url, data)["instance"]
+        return self._req("post", url, data)["instance"]
 
-    def update_instance(self, instance: Union[str, dict], **kwargs):
+    def update_instance(self, instance: Union[str, dict], **kwargs) -> dict:
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}"
-        return self._patch(url, kwargs)["instance"]
+        return self._req("patch", url, kwargs)["instance"]
 
-    def delete_instance(self, instance: Union[str, dict]):
+    def delete_instance(self, instance: Union[str, dict]) -> None:
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}"
-        return self._delete(url)
+        return self._req("delete", url)
 
-    def list_keys(self, params: Optional[dict] = None):
+    def list_keys(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/ssh-keys"
-        return self._get(url, params)["ssh_keys"]
+        return self._req("get", url, params)["ssh_keys"]
 
-    def get_key(self, key: Union[str, dict], params: Optional[dict] = None):
+    def get_key(self, key: Union[str, dict], params: Optional[dict] = None) -> dict:
         key_id = self._get_obj_key(key)
         url = f"{self.url}/ssh-keys/{key_id}"
-        return self._get(url, params)["ssh_key"]
+        return self._req("get", url, params)["ssh_key"]
 
-    def create_key(self, name: str, key: str, **kwargs):
+    def create_key(self, name: str, key: str, **kwargs) -> dict:
         data = {"name": name, "ssh_key": key}
         data.update(kwargs)
         url = f"{self.url}/ssh-keys"
-        return self._post(url, data)["ssh_key"]
+        return self._req("post", url, data)["ssh_key"]
 
-    def update_key(self, key: Union[str, dict], **kwargs):
+    def update_key(self, key: Union[str, dict], **kwargs) -> None:
         key_id = self._get_obj_key(key)
         url = f"{self.url}/ssh-keys/{key_id}"
-        return self._patch(url, kwargs)["ssh_key"]
+        return self._req("patch", url, kwargs)["ssh_key"]
 
-    def delete_key(self, key: Union[str, dict]):
+    def delete_key(self, key: Union[str, dict]) -> None:
         key_id = self._get_obj_key(key)
         url = f"{self.url}/ssh-keys/{key_id}"
-        return self._delete(url)
+        return self._req("delete", url)
 
-    def list_scripts(self, params: Optional[dict] = None):
+    def list_scripts(self, params: Optional[dict] = None) -> list:
         url = f"{self.url}/startup-scripts"
-        return self._get(url, params)["startup_scripts"]
+        return self._req("get", url, params)["startup_scripts"]
 
-    def get_script(self, script: Union[str, dict], params: Optional[dict] = None):
+    def get_script(self, script: Union[str, dict], params: Optional[dict] = None) -> dict:
         script_id = self._get_obj_key(script)
         url = f"{self.url}/startup-scripts/{script_id}"
-        return self._get(url, params)["startup_script"]
+        return self._req("get", url, params)["startup_script"]
 
-    def create_script(self, name: str, script: str, **kwargs):
+    def create_script(self, name: str, script: str, **kwargs) -> dict:
         data = {"name": name, "script": script}
         data.update(kwargs)
         url = f"{self.url}/startup-scripts"
-        return self._post(url, data)["startup_script"]
+        return self._req("post", url, data)["startup_script"]
 
-    def update_script(self, script: Union[str, dict], **kwargs):
+    def update_script(self, script: Union[str, dict], **kwargs) -> None:
         script_id = self._get_obj_key(script)
         url = f"{self.url}/startup-scripts/{script_id}"
-        return self._patch(url, kwargs)["startup_script"]
+        return self._req("patch", url, kwargs)["startup_script"]
 
-    def delete_script(self, script: Union[str, dict]):
+    def delete_script(self, script: Union[str, dict]) -> None:
         script_id = self._get_obj_key(script)
         url = f"{self.url}/startup-scripts/{script_id}"
-        return self._delete(url)
+        return self._req("delete", url)
 
-    def list_ipv4(self, instance: Union[str, dict], params: Optional[dict] = None):
+    def list_ipv4(self, instance: Union[str, dict], params: Optional[dict] = None) -> list:
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}/ipv4"
-        return self._get(url, params)["ipv4s"]
+        return self._req("get", url, params)["ipv4s"]
 
-    def create_ipv4(self, instance: Union[str, dict], **kwargs):
+    def create_ipv4(self, instance: Union[str, dict], **kwargs) -> dict:
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}/ipv4"
-        return self._post(url, kwargs)["ipv4"]
+        return self._req("post", url, kwargs)["ipv4"]
 
-    def delete_ipv4(self, instance: Union[str, dict]):
+    def delete_ipv4(self, instance: Union[str, dict]) -> None:
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}/ipv4"
-        return self._delete(url)
+        return self._req("delete", url)
 
     @staticmethod
     def filter_list(item_list: List[dict], value: str, key: str = "name") -> dict:
@@ -195,29 +209,15 @@ class Vultr(object):
         except StopIteration:
             return {}
 
-    def _get(self, url, params: Optional[dict] = None):
-        r = self._session.get(url, params=params, timeout=10)
+    def _req(self, method, url, params: Optional[dict] = None) -> Any:
+        r = self._session.request(method, url, params=params, timeout=10)
         if not r.ok:
             raise VultrException(r)
-        return r.json()
-
-    def _post(self, url, data):
-        r = self._session.post(url, json=data, timeout=10)
-        if not r.ok:
-            raise VultrException(r)
-        return r.json()
-
-    def _patch(self, url, data):
-        r = self._session.patch(url, json=data, timeout=10)
-        if not r.ok:
-            raise VultrException(r)
-        return r.json()
-
-    def _delete(self, url):
-        r = self._session.delete(url, timeout=10)
-        if not r.ok:
-            raise VultrException(r)
-        return None
+        if r.status_code == 204:
+            return None
+        if r.headers.get("content-type") == "application/json":
+            return r.json()
+        return r.text
 
     @staticmethod
     def _get_obj_key(obj, key="id"):

@@ -85,13 +85,14 @@ data = {
 instance = vultr.create_instance(available[0], plan, **data)
 ```
 
-Arbitrary Methods `get`, `post`, `patch`, `delete`
+Arbitrary Methods [get](#Vultr.get), [post](#Vultr.post), [patch](#Vultr.patch), [put](#Vultr.put), [delete](#Vultr.delete)
 
 ```python
 plans = vultr.get('plans', {'type': 'vc2'})
 sshkey = vultr.post('ssh-keys', name='key-name', ssh_key='ssh-rsa AAAA...')
 instance = vultr.patch('instances', plan=plans[1]['id'])
-vultr.delete(f"instances/019ad1a8-2aa3-7650-83d1-8520d65ed6af")
+instance = vultr.patch('blocks/{block-id}', plan=plans[1]['id'])
+vultr.delete("instances/{instance-id}")
 ```
 
 Error Handling

@@ -10,8 +10,10 @@ def test_basic():
     print(f"plans: {len(plans['plans'])}")
     assert len(plans["plans"]) == min(plans["meta"]["total"], per_page)
 
-    plan = vultr.filter_list(plans["plans"], "vc2-1c-1gb", "id")
-    assert plan.get("id") == "vc2-1c-1gb"
+    plan_id = "vc2-1c-1gb"
+    plan = vultr.filter_list(plans["plans"], plan_id, "id")
+    print(f"plan: {plan}")
+    assert plan.get("id") == plan_id
 
     # regions = vultr.list_regions({"per_page": per_page})
     # print(f"regions: {len(regions)}")
