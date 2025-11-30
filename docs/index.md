@@ -39,53 +39,83 @@ python -m pip install vultr-python
 
 ## Usage
 
-You will need to create an api key and whitelist your IP address. Most functions do not work without an API Key.
+You will need to create an api key and whitelist your IP address for most functions.
 
 - [https://my.vultr.com/settings/#settingsapi](https://my.vultr.com/settings/#settingsapi)
 
-Initialize the class with your API Key or with the `VULTR_API_KEY` environment variable.
+Initialize the `Vultr` class with your API Key or use the `VULTR_API_KEY` environment variable.
 
 ```python
 from vultr import Vultr
 
-vultr = Vultr('VULTR_API_KEY')
+vultr = Vultr("VULTR_API_KEY")
 ```
 
 List plans and get available regions for that plan
 
 ```python
-plans = vultr.list_plans()
-plan = plans[0]  # 0 seems to be the basic 5 dollar plan
+plans = vultr.list_plans({"type": "vc2"})  # Filter by type
+plan = plans[0]  # 0 seems to be the base plan
 regions = vultr.list_regions()
-available = vultr.filter_regions(regions, plan['locations'])
+available = vultr.filter_regions(regions, plan["locations"])
 ```
 
 Get the OS list and filter by name
 
 ```python
 os_list = vultr.list_os()
-ubuntu_lts = vultr.filter_os(os_list, 'Ubuntu 24.04 LTS x64')
+ubuntu_lts = vultr.filter_os(os_list, "Ubuntu 24.04 LTS x64")
 ```
 
 Create a new ssh key from key string
 
 ```python
-sshkey = vultr.create_key('key-name', 'ssh-rsa AAAA...')
+sshkey = vultr.create_key("key-name", "ssh-rsa AAAA...")
+vultr.delete_key(sshkey['id'])
 ```
 
 Create a new instance
 
 ```python
-hostname = 'my-new-host'
 data = {
-    'region': available[0]['id'],
-    'plan': plan['id'],
-    'os_id': ubuntu_lts['id'],
-    'sshkey_id': [sshkey['id']],
-    'hostname': hostname,
-    'label': hostname,
+    "os_id": ubuntu_lts["id"],
+    "sshkey_id": [sshkey["id"]],
+    "hostname": "my-new-host",
+    "label": "my-new-host",
 }
-instance = vultr.create_instance(**data)
+instance = vultr.create_instance(available[0], plan, **data)
+```
+
+Arbitrary Methods [get](#Vultr.get), [post](#Vultr.post), [patch](#Vultr.patch), [put](#Vultr.put), [delete](#Vultr.delete)
+
+```python
+plans = vultr.get("/plans", {"type": "vc2"})
+sshkey = vultr.post("/ssh-keys", name="key-name", ssh_key="ssh-rsa AAAA...")
+instance = vultr.patch("/instances/{instance-id}", plan=plans[1]["id"])
+database = vultr.put("/databases/{database-id}", tag="new tag")
+vultr.delete("/snapshots/{snapshot-id}")
+```
+
+Error Handling
+
+```python
+>>> instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", os_id=2284)
+Traceback (most recent call last):
+vultr.vultr.VultrException: Error 400: Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.
+```
+
+Using the `VultrException` class
+
+```python
+from vultr import VultrException
+
+try:
+    instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", os_id=2284)
+except VultrException as error:
+    print(error.error)
+    # 'Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.'
+    print(error.status)
+    # 400
 ```
 
 &nbsp;
@@ -93,3 +123,5 @@ instance = vultr.create_instance(**data)
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
 ---
+
+<p style="font-size: 2em; font-weight: 300;">API Documentation</p>

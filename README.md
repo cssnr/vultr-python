@@ -5,7 +5,9 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9b356c4327df41e395c81de1c717ce11)](https://app.codacy.com/gh/cssnr/vultr-python/dashboard)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_vultr-python&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_vultr-python)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/vultr-python/actions/workflows/lint.yaml)
-[![GitHub Deployments](https://img.shields.io/github/deployments/cssnr/vultr-python/github-pages?logo=materialformkdocs&logoColor=white&label=github-pages)](https://cssnr.github.io/vultr-python)
+[![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/vultr-python/actions/workflows/test.yaml)
+[![Deployments PyPi](https://img.shields.io/github/deployments/cssnr/vultr-python/pypi?logo=pypi&logoColor=white&label=pypi)](https://pypi.org/project/vultr-python/)
+[![Deployments Pages](https://img.shields.io/github/deployments/cssnr/vultr-python/github-pages?logo=materialformkdocs&logoColor=white&label=github-pages)](https://cssnr.github.io/vultr-python/)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/vultr-python?logo=github&label=updated)](https://github.com/cssnr/vultr-python/graphs/commit-activity)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/vultr-python?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/vultr-python)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/vultr-python?logo=htmx&logoColor=white)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
@@ -19,8 +21,8 @@
 
 # Vultr Python
 
-<a title="Vultr Python" href="https://cssnr.github.io/vultr-python" target="_blank">
-<img alt="Vultr Python" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/vultr-python/logo128.png"></a>
+<a title="Vultr Python" href="https://cssnr.github.io/vultr-python/" target="_blank">
+<img alt="Vultr Python" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/vultr-python/refs/heads/master/.github/assets/logo.svg"></a>
 
 - [Install](#Install)
 - [Usage](#Usage)
@@ -31,13 +33,12 @@ Python 3 wrapper for the Vultr API v2.
 
 [![GitHub](https://img.shields.io/badge/github-232925?style=for-the-badge&logo=github)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
 [![PyPi](https://img.shields.io/badge/pypi-006dad?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/vultr-python)
-[![Docs](https://img.shields.io/badge/docs-198754?style=for-the-badge&logo=mdbook)](https://cssnr.github.io/vultr-python)
+[![Docs](https://img.shields.io/badge/docs-198754?style=for-the-badge&logo=mdbook)](https://cssnr.github.io/vultr-python/)
 [![Vultr](https://img.shields.io/badge/vultr-007bfc?style=for-the-badge&logo=vultr)](https://www.vultr.com/api/?ref=6905748)
 
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
 > [!TIP]  
-> This project is not complete, but has many useful functions.  
 > Please submit a [Feature Request](https://github.com/cssnr/vultr-python/discussions/categories/feature-requests)
 > or report any [Issues](https://github.com/cssnr/vultr-python/issues).
 
@@ -60,57 +61,86 @@ python -m pip install vultr-python
 
 ## Usage
 
-You will need to create an api key and whitelist your IP address.
-Most functions do not work without an API Key.
+You will need to create an api key and whitelist your IP address for most functions.
 
 - [https://my.vultr.com/settings/#settingsapi](https://my.vultr.com/settings/#settingsapi)
 
-Initialize the class with your API Key or with the `VULTR_API_KEY` environment variable.
+Initialize the `Vultr` class with your API Key or use the `VULTR_API_KEY` environment variable.
 
 ```python
 from vultr import Vultr
 
-vultr = Vultr('VULTR_API_KEY')
+vultr = Vultr("VULTR_API_KEY")
 ```
 
 List plans and get available regions for that plan
 
 ```python
-plans = vultr.list_plans()
-plan = plans[0]  # 0 seems to be the basic 5 dollar plan
+plans = vultr.list_plans({"type": "vc2"})  # Filter by type
+plan = plans[0]  # 0 seems to be the base plan
 regions = vultr.list_regions()
-available = vultr.filter_regions(regions, plan['locations'])
+available = vultr.filter_regions(regions, plan["locations"])
 ```
 
 Get the OS list and filter by name
 
 ```python
 os_list = vultr.list_os()
-ubuntu_lts = vultr.filter_os(os_list, 'Ubuntu 24.04 LTS x64')
+ubuntu_lts = vultr.filter_os(os_list, "Ubuntu 24.04 LTS x64")
 ```
 
 Create a new ssh key from key string
 
 ```python
-sshkey = vultr.create_key('key-name', 'ssh-rsa AAAA...')
+sshkey = vultr.create_key("key-name", "ssh-rsa AAAA...")
+vultr.delete_key(sshkey['id'])
 ```
 
 Create a new instance
 
 ```python
-hostname = 'my-new-host'
 data = {
-    'region': available[0]['id'],
-    'plan': plan['id'],
-    'os_id': ubuntu_lts['id'],
-    'sshkey_id': [sshkey['id']],
-    'hostname': hostname,
-    'label': hostname,
+    "os_id": ubuntu_lts["id"],
+    "sshkey_id": [sshkey["id"]],
+    "hostname": "my-new-host",
+    "label": "my-new-host",
 }
-instance = vultr.create_instance(**data)
+instance = vultr.create_instance(available[0], plan, **data)
 ```
 
-Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python)
+Arbitrary Methods `get`, `post`, `patch`, `put`, `delete`
+
+```python
+plans = vultr.get("/plans", {"type": "vc2"})
+sshkey = vultr.post("/ssh-keys", name="key-name", ssh_key="ssh-rsa AAAA...")
+instance = vultr.patch("/instances/{instance-id}", plan=plans[1]["id"])
+database = vultr.put("/databases/{database-id}", tag="new tag")
+vultr.delete("/snapshots/{snapshot-id}")
+```
+
+Error Handling
+
+```python
+>>> instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", os_id=2284)
+Traceback (most recent call last):
+vultr.vultr.VultrException: Error 400: Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.
+```
+
+Using the `VultrException` class
+
+```python
+from vultr import VultrException
+
+try:
+    instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", os_id=2284)
+except VultrException as error:
+    print(error.error)
+    # 'Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.'
+    print(error.status)
+    # 400
+```
+
+Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python/)
 
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
