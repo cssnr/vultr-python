@@ -39,11 +39,11 @@ python -m pip install vultr-python
 
 ## Usage
 
-You will need to create an api key and whitelist your IP address. Most functions do not work without an API Key.
+You will need to create an api key and whitelist your IP address for most functions.
 
 - [https://my.vultr.com/settings/#settingsapi](https://my.vultr.com/settings/#settingsapi)
 
-Initialize the class with your API Key or with the `VULTR_API_KEY` environment variable.
+Initialize the `Vultr` class with your API Key or use the `VULTR_API_KEY` environment variable.
 
 ```python
 from vultr import Vultr
@@ -88,15 +88,21 @@ instance = vultr.create_instance(available[0], plan, **data)
 Arbitrary Methods `get`, `post`, `patch`, `delete`
 
 ```python
-# vultr.get('url', params)
 instances = vultr.get('instances', {'type': 'vc2'})
-# vultr.post('url', **kwargs)
 sshkey = vultr.post('ssh-keys', name='key-name', ssh_key='ssh-rsa AAAA...')
-# vultr.delete('url')
 vultr.delete(f"instances/019ad1a8-2aa3-7650-83d1-8520d65ed6af")
 ```
 
 Error Handling
+
+```python
+>>> instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", **data)
+Traceback (most recent call last):
+    ...
+vultr.vultr.VultrException: Error 400: Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.
+```
+
+Using the `VultrException` class
 
 ```python
 from vultr import VultrException

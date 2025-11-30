@@ -22,17 +22,19 @@ if ($c) {
     }
 }
 
-python -m pdoc -t .\docs\ -p 8008 `
-    --favicon "https://df.cssnr.com/raw/logo128.png" `
-    --logo "https://df.cssnr.com/raw/logo128.png" `
+if ($b) {
+    Write-Host -ForegroundColor Yellow "Building Docs..."
+    python -m pdoc -t .\docs\ -o site `
+    --logo "https://raw.githubusercontent.com/cssnr/vultr-python/refs/heads/master/.github/assets/logo.svg" `
     --logo-link "https://github.com/cssnr/vultr-python" `
     vultr
+} else {
+    Write-Host -ForegroundColor Green "Serving Docs..."
+    python -m pdoc -t .\docs\ -p 8000 -h 0.0.0.0 `
+    --logo "https://raw.githubusercontent.com/cssnr/vultr-python/refs/heads/master/.github/assets/logo.svg" `
+    --logo-link "https://github.com/cssnr/vultr-python" `
+    vultr
+}
 
+#--favicon "https://df.cssnr.com/raw/logo128.png" `
 #-e "vultr=https://github.com/cssnr/vultr-python/blob/updates/src/vultr/" `
-
-#if ($b) {
-#    Write-Host -ForegroundColor Green "Building Docs..."
-#    zensical build
-#} else {
-#    zensical serve
-#}

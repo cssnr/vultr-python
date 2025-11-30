@@ -13,7 +13,7 @@ on:
         default: site
 
 env:
-  logo: "https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/vultr-python/logo128.png"
+  logo: "https://raw.githubusercontent.com/cssnr/vultr-python/refs/heads/master/.github/assets/logo.svg"
   link: ${{ github.event.repository.html_url }}
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: "Debug CTX github"
         continue-on-error: true
@@ -53,29 +53,29 @@ jobs:
           python -m pip install -U pdoc
           python -m pip install -e .
           python -m pdoc -t docs -o "${{ inputs.path }}" \
-            --favicon "${{ env.logo }}" \
             --logo "${{ env.logo }}" \
             --logo-link "${{ env.link }}" \
             vultr
 
-      - name: "Update Permissions"
+      - name: "Fix Docs"
+        working-directory: ${{ inputs.path }}
         run: |
-          chmod -c -R +rX "${{ inputs.path }}" | while read name; do
-            echo "::notice::Fixed invalid file permissions: ${name}"
-          done
+          mv -f vultr.html index.html
+
+      #- name: "Update Permissions"
+      #  run: |
+      #    chmod -c -R +rX "${{ inputs.path }}" | while read name; do
+      #      echo "::notice::Fixed invalid file permissions: ${name}"
+      #    done
 
       - name: "List Artifacts"
-        env:
-          path: ${{ inputs.path }}
+        working-directory: ${{ inputs.path }}
         run: |
-          echo "::group::ls"
-          ls -lAhR "${path}"
+          results="$(tree . || ls -lAhR .)"
+          echo "::group::results"
+          echo "${results}"
           echo "::endgroup::"
-          echo "::group::tree"
-          tree "${path}"
-          echo "::endgroup::"
-          results="$(tree "${path}")"
-          markdown='Artifacts:\n```text\n'"${results}"'\n```'
+          markdown='Artifacts: `${{ inputs.path }}`\n```text\n'"${results}"'\n```'
           echo -e "${markdown}" >> $GITHUB_STEP_SUMMARY
 
       - name: "Upload Pages Artifact"
