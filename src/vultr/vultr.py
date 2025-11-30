@@ -49,9 +49,7 @@ class Vultr(object):
         url = f"{self.url}/instances/{instance_id}"
         return self._get(url, params)["instance"]
 
-    def create_instance(
-        self, region: Union[str, dict], plan: Union[str, dict], **kwargs
-    ):
+    def create_instance(self, region: Union[str, dict], plan: Union[str, dict], **kwargs):
         data = {"region": self._get_obj_key(region), "plan": self._get_obj_key(plan)}
         data.update(kwargs)
         url = f"{self.url}/instances"
