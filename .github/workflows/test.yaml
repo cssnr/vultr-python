@@ -1,0 +1,85 @@
+name: "Test"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths: &paths
+      - ".github/workflows/test.yaml"
+      - "src/**"
+      - "tests/**"
+      - "pyproject.toml"
+  pull_request:
+    paths: *paths
+
+jobs:
+  build:
+    name: "Build"
+    if: ${{ !contains(github.event.head_commit.message, '#notest') }}
+    uses: ./.github/workflows/build.yaml
+    with:
+      name: test
+
+    permissions:
+      contents: read
+
+  test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    needs: [build]
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+    name: "Test ${{ matrix.version }}"
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v6
+
+      - name: "Debug event.json"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        run: cat "${GITHUB_EVENT_PATH}"
+
+      - name: "Debug CTX github"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        env:
+          GITHUB_CTX: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CTX"
+
+      - name: "Debug Environment"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        run: env
+
+      - name: "Download Artifact"
+        uses: actions/download-artifact@v6
+        with:
+          name: test
+          path: dist
+
+      - name: "Setup Python ${{ matrix.version }}"
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.version }}
+          cache: "pip"
+
+      - name: "Install ${{ matrix.version }}"
+        run: |
+          python -V
+          python -m pip install -U pip pytest
+          python -m pip install dist/*.whl
+
+      #- name: "Debug ${{ matrix.version }}"
+      #  run: |
+      #    ls -lAhR dist/
+
+      - name: "Test ${{ matrix.version }}"
+        #continue-on-error: ${{ contains('dev', matrix.version) }}
+        run: |
+          pytest -s

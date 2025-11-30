@@ -16,6 +16,9 @@ jobs:
     with:
       name: "release"
 
+    permissions:
+      contents: read
+
   publish:
     name: "Publish"
     runs-on: ubuntu-latest
@@ -106,6 +109,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: [publish]
+
+    permissions:
+      contents: write
 
     steps:
       - name: "Debug"

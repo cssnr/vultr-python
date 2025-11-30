@@ -1,2 +1,44 @@
 {% extends "default/module.html.jinja2" %}
 {% block title %}Vultr Python{% endblock %}
+{% block head %}
+
+  <link rel="icon" sizes="any" href="https://raw.githubusercontent.com/cssnr/vultr-python/refs/heads/master/.github/assets/logo.svg"/>
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/cssnr/vultr-python/refs/heads/master/.github/assets/logo.svg"/>
+
+  <meta name="author" content="Shane"/>
+  <meta name="title" content="Vultr Python"/>
+  <meta name="description" content="Python 3 wrapper for the Vultr API v2."/>
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Vultr Python API v2">
+  <meta property="og:title" content="Vultr Python">
+  <meta property="og:description" content="Python 3 wrapper for the Vultr API v2.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/vultr-python/logo256.png">
+  <meta property="og:image:alt" content="Vultr Python">
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:site" content="Vultr Python API v2">
+  <meta property="twitter:title" content="Vultr Python">
+  <meta property="twitter:description" content="Python 3 wrapper for the Vultr API v2.">
+  <meta property="twitter:image" content="https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/vultr-python/logo256.png">
+  <meta property="twitter:image:alt" content="Vultr Python">
+
+  <meta name="darkreader-lock">
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      for (const el of document.querySelectorAll('a')) {
+        if (el.host && el.host !== globalThis.location.host) {
+          el.target = '_blank'
+          el.rel = 'noopener'
+        }
+      }
+    })
+  </script>
+
+{% endblock %}
+
+{#{% block nav_footer %}#}
+{#  <footer>My Package v{{ env["VERSION"] | default("1.0") }}</footer>#}
+{#{% endblock %}#}
+
+{#{% block attribution %}{% endblock %}#}
