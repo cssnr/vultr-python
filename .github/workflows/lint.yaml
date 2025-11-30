@@ -137,19 +137,19 @@ jobs:
           echo "::endgroup::"
           "${RUNNER_TEMP}/actionlint" -color -verbose -shellcheck= -pyflakes=
 
-      #- name: "pytest"
-      #  if: ${{ !cancelled() }}
-      #  id: coverage
-      #  run: |
-      #    coverage run -m pytest
-      #    coverage xml
-      #    coverage report -m
+      - name: "pytest"
+        if: ${{ !cancelled() }}
+        id: coverage
+        run: |
+          coverage run -m pytest
+          coverage xml
+          coverage report -m
 
-      #- name: "codecov"
-      #  if: ${{ !cancelled() && steps.coverage.outcome == 'success' }}
-      #  uses: codecov/codecov-action@v5
-      #  with:
-      #    token: ${{ secrets.CODECOV_TOKEN }}
+      - name: "codecov"
+        if: ${{ !cancelled() && steps.coverage.outcome == 'success' }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       #- name: "hadolint"
       #  if: ${{ !cancelled() }}

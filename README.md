@@ -5,7 +5,9 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9b356c4327df41e395c81de1c717ce11)](https://app.codacy.com/gh/cssnr/vultr-python/dashboard)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_vultr-python&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_vultr-python)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/vultr-python/actions/workflows/lint.yaml)
-[![GitHub Deployments](https://img.shields.io/github/deployments/cssnr/vultr-python/github-pages?logo=materialformkdocs&logoColor=white&label=github-pages)](https://cssnr.github.io/vultr-python)
+[![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/vultr-python/actions/workflows/test.yaml)
+[![Deployments PyPi](https://img.shields.io/github/deployments/cssnr/vultr-python/pypi?logo=materialformkdocs&logoColor=white&label=pypi)](https://pypi.org/project/vultr-python/)
+[![Deployments Pages](https://img.shields.io/github/deployments/cssnr/vultr-python/github-pages?logo=materialformkdocs&logoColor=white&label=github-pages)](https://cssnr.github.io/vultr-python/)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/vultr-python?logo=github&label=updated)](https://github.com/cssnr/vultr-python/graphs/commit-activity)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/vultr-python?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/vultr-python)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/vultr-python?logo=htmx&logoColor=white)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
@@ -19,7 +21,7 @@
 
 # Vultr Python
 
-<a title="Vultr Python" href="https://cssnr.github.io/vultr-python" target="_blank">
+<a title="Vultr Python" href="https://cssnr.github.io/vultr-python/" target="_blank">
 <img alt="Vultr Python" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/vultr-python/refs/heads/master/.github/assets/logo.svg"></a>
 
 - [Install](#Install)
@@ -31,7 +33,7 @@ Python 3 wrapper for the Vultr API v2.
 
 [![GitHub](https://img.shields.io/badge/github-232925?style=for-the-badge&logo=github)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
 [![PyPi](https://img.shields.io/badge/pypi-006dad?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/vultr-python)
-[![Docs](https://img.shields.io/badge/docs-198754?style=for-the-badge&logo=mdbook)](https://cssnr.github.io/vultr-python)
+[![Docs](https://img.shields.io/badge/docs-198754?style=for-the-badge&logo=mdbook)](https://cssnr.github.io/vultr-python/)
 [![Vultr](https://img.shields.io/badge/vultr-007bfc?style=for-the-badge&logo=vultr)](https://www.vultr.com/api/?ref=6905748)
 
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
@@ -120,7 +122,7 @@ vultr.delete(f"instances/019ad1a8-2aa3-7650-83d1-8520d65ed6af")
 
 These methods take the URI as the first argument, and data kwargs as the second.
 
-Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python)
+Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python/)
 
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
