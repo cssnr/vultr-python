@@ -3,15 +3,14 @@ name: "Test"
 on:
   workflow_dispatch:
   push:
-    #branches: [master]
-    #paths: &paths
-    paths:
+    branches: [master]
+    paths: &paths
       - ".github/workflows/test.yaml"
       - "src/**"
       - "tests/**"
       - "pyproject.toml"
-  #pull_request:
-  #  paths: *paths
+  pull_request:
+    paths: *paths
 
 jobs:
   build:
