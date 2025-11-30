@@ -8,7 +8,6 @@ on:
       - ".gitignore"
       - ".prettierignore"
       - "MANIFEST.in"
-      - "pyproject.toml"
   pull_request:
 
 concurrency:
@@ -102,6 +101,11 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           bandit -c pyproject.toml -r src
+
+      - name: "validate-pyproject"
+        if: ${{ !cancelled() }}
+        run: |
+          validate-pyproject pyproject.toml
 
       - name: "prettier"
         if: ${{ !cancelled() }}
