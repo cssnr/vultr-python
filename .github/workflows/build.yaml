@@ -55,17 +55,13 @@ jobs:
           python -m build
 
       - name: "List Artifacts"
-        env:
-          path: ${{ inputs.path }}
+        working-directory: ${{ inputs.path }}
         run: |
-          echo "::group::ls"
-          ls -lAhR "${path}"
+          results="$(tree . || ls -lAhR .)"
+          echo "::group::results"
+          echo "${results}"
           echo "::endgroup::"
-          echo "::group::tree"
-          tree "${path}"
-          echo "::endgroup::"
-          results="$(tree "${path}")"
-          markdown='Artifacts:\n```text\n'"${results}"'\n```'
+          markdown='Artifacts: `${{ inputs.path }}`\n```text\n'"${results}"'\n```'
           echo -e "${markdown}" >> $GITHUB_STEP_SUMMARY
 
       - name: "Upload to Actions"
