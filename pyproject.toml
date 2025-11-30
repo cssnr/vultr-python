@@ -41,6 +41,7 @@ dev = [
     "setuptools",
     "ty",
     "types-requests",
+    "validate-pyproject[all]",
 ]
 
 [project.urls]
