@@ -36,6 +36,7 @@ dev = [
     "coverage",
     "isort",
     "mypy",
+    "pytest",
     "requests",
     "ruff",
     "setuptools",
