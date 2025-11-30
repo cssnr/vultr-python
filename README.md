@@ -76,8 +76,8 @@ vultr = Vultr('VULTR_API_KEY')
 List plans and get available regions for that plan
 
 ```python
-plans = vultr.list_plans()
-plan = plans[0]  # 0 seems to be the basic 5 dollar plan
+plans = vultr.list_plans({'type': 'vc2'})  # vc2 - Cloud Compute
+plan = plans[0]  # 0 seems to be the base plan
 regions = vultr.list_regions()
 available = vultr.filter_regions(regions, plan['locations'])
 ```
@@ -98,26 +98,23 @@ sshkey = vultr.create_key('key-name', 'ssh-rsa AAAA...')
 Create a new instance
 
 ```python
-hostname = 'my-new-host'
 data = {
-    'region': available[0]['id'],
-    'plan': plan['id'],
     'os_id': ubuntu_lts['id'],
     'sshkey_id': [sshkey['id']],
-    'hostname': hostname,
-    'label': hostname,
+    'hostname': 'my-new-host',
+    'label': 'my-new-host',
 }
-instance = vultr.create_instance(**data)
+instance = vultr.create_instance(available[0], plan, **data)
 ```
 
 Arbitrary Methods `get`, `post`, `patch`, `delete`
 
 ```python
-# vultr.list_instances()
-instances = vultr.get('instances')
-# vultr.create_key()
+# vultr.get('url', params)
+instances = vultr.get('instances', {'type': 'vc2'})
+# vultr.post('url', **kwargs)
 sshkey = vultr.post('ssh-keys', name='key-name', ssh_key='ssh-rsa AAAA...')
-# vultr.delete_instance()
+# vultr.delete('url')
 vultr.delete(f"instances/019ad1a8-2aa3-7650-83d1-8520d65ed6af")
 ```
 

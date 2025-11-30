@@ -16,8 +16,8 @@ class Vultr(object):
         if self.api_key:
             self._session.headers.update({"Authorization": f"Bearer {self.api_key}"})
 
-    def get(self, url: str):
-        return self._get(f"{self.url}/{url.lstrip('/')}")
+    def get(self, url: str, params: Optional[dict] = None):
+        return self._get(f"{self.url}/{url.lstrip('/')}", params)
 
     def post(self, url: str, **kwargs):
         return self._post(f"{self.url}/{url.lstrip('/')}", kwargs)
@@ -28,29 +28,31 @@ class Vultr(object):
     def delete(self, url: str):
         return self._delete(f"{self.url}/{url.lstrip('/')}")
 
-    def list_os(self):
+    def list_os(self, params: Optional[dict] = None):
         url = f"{self.url}/os"
-        return self._get(url)["os"]
+        return self._get(url, params)["os"]
 
-    def list_plans(self):
+    def list_plans(self, params: Optional[dict] = None):
         url = f"{self.url}/plans"
-        return self._get(url)["plans"]
+        return self._get(url, params)["plans"]
 
-    def list_regions(self):
+    def list_regions(self, params: Optional[dict] = None):
         url = f"{self.url}/regions"
-        return self._get(url)["regions"]
+        return self._get(url, params)["regions"]
 
-    def list_instances(self):
+    def list_instances(self, params: Optional[dict] = None):
         url = f"{self.url}/instances"
-        return self._get(url)["instances"]
+        return self._get(url, params)["instances"]
 
-    def get_instance(self, instance: Union[str, dict]):
+    def get_instance(self, instance: Union[str, dict], params: Optional[dict] = None):
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}"
-        return self._get(url)["instance"]
+        return self._get(url, params)["instance"]
 
-    def create_instance(self, region: str, plan: str, **kwargs):
-        data = {"region": region, "plan": plan}
+    def create_instance(
+        self, region: Union[str, dict], plan: Union[str, dict], **kwargs
+    ):
+        data = {"region": self._get_obj_key(region), "plan": self._get_obj_key(plan)}
         data.update(kwargs)
         url = f"{self.url}/instances"
         return self._post(url, data)["instance"]
@@ -65,14 +67,14 @@ class Vultr(object):
         url = f"{self.url}/instances/{instance_id}"
         return self._delete(url)
 
-    def list_keys(self):
+    def list_keys(self, params: Optional[dict] = None):
         url = f"{self.url}/ssh-keys"
-        return self._get(url)["ssh_keys"]
+        return self._get(url, params)["ssh_keys"]
 
-    def get_key(self, key: Union[str, dict]):
+    def get_key(self, key: Union[str, dict], params: Optional[dict] = None):
         key_id = self._get_obj_key(key)
         url = f"{self.url}/ssh-keys/{key_id}"
-        return self._get(url)["ssh_key"]
+        return self._get(url, params)["ssh_key"]
 
     def create_key(self, name: str, key: str, **kwargs):
         data = {"name": name, "ssh_key": key}
@@ -90,14 +92,14 @@ class Vultr(object):
         url = f"{self.url}/ssh-keys/{key_id}"
         return self._delete(url)
 
-    def list_scripts(self):
+    def list_scripts(self, params: Optional[dict] = None):
         url = f"{self.url}/startup-scripts"
-        return self._get(url)["startup_scripts"]
+        return self._get(url, params)["startup_scripts"]
 
-    def get_script(self, script: Union[str, dict]):
+    def get_script(self, script: Union[str, dict], params: Optional[dict] = None):
         script_id = self._get_obj_key(script)
         url = f"{self.url}/startup-scripts/{script_id}"
-        return self._get(url)["startup_script"]
+        return self._get(url, params)["startup_script"]
 
     def create_script(self, name: str, script: str, **kwargs):
         data = {"name": name, "script": script}
@@ -115,10 +117,10 @@ class Vultr(object):
         url = f"{self.url}/startup-scripts/{script_id}"
         return self._delete(url)
 
-    def list_ipv4(self, instance: Union[str, dict]):
+    def list_ipv4(self, instance: Union[str, dict], params: Optional[dict] = None):
         instance_id = self._get_obj_key(instance)
         url = f"{self.url}/instances/{instance_id}/ipv4"
-        return self._get(url)["ipv4s"]
+        return self._get(url, params)["ipv4s"]
 
     def create_ipv4(self, instance: Union[str, dict], **kwargs):
         instance_id = self._get_obj_key(instance)
@@ -155,8 +157,8 @@ class Vultr(object):
     def filter_regions(regions: list, locations: list) -> list:
         return [d for d in regions if d["id"] in locations]
 
-    def _get(self, url):
-        r = self._session.get(url, timeout=10)
+    def _get(self, url, params: Optional[dict] = None):
+        r = self._session.get(url, params=params, timeout=10)
         if not r.ok:
             r.raise_for_status()
         return r.json()
