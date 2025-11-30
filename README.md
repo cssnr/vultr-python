@@ -6,6 +6,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_vultr-python&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_vultr-python)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/vultr-python/actions/workflows/lint.yaml)
 [![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/vultr-python/actions/workflows/test.yaml)
+[![Deployments PyPi](https://img.shields.io/github/deployments/cssnr/vultr-python/pypi?logo=pypi&logoColor=white&label=pypi)](https://pypi.org/project/vultr-python/)
 [![Deployments Pages](https://img.shields.io/github/deployments/cssnr/vultr-python/github-pages?logo=materialformkdocs&logoColor=white&label=github-pages)](https://cssnr.github.io/vultr-python/)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/vultr-python?logo=github&label=updated)](https://github.com/cssnr/vultr-python/graphs/commit-activity)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/vultr-python?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/vultr-python)
@@ -119,7 +120,7 @@ sshkey = vultr.post('ssh-keys', name='key-name', ssh_key='ssh-rsa AAAA...')
 vultr.delete(f"instances/019ad1a8-2aa3-7650-83d1-8520d65ed6af")
 ```
 
-Errors Handling
+Error Handling
 
 ```python
 from vultr import VultrException
@@ -127,8 +128,10 @@ from vultr import VultrException
 try:
     instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", os_id=2284)
 except VultrException as error:
-    print(error.error)  # 'Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.'
-    print(error.status)  # 400
+    print(error.error)
+    # 'Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.'
+    print(error.status)
+    # 400
 ```
 
 Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.io/vultr-python/)

@@ -96,7 +96,7 @@ sshkey = vultr.post('ssh-keys', name='key-name', ssh_key='ssh-rsa AAAA...')
 vultr.delete(f"instances/019ad1a8-2aa3-7650-83d1-8520d65ed6af")
 ```
 
-Errors Handling
+Error Handling
 
 ```python
 from vultr import VultrException
@@ -104,8 +104,10 @@ from vultr import VultrException
 try:
     instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", os_id=2284)
 except VultrException as error:
-    print(error.error)  # 'Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.'
-    print(error.status)  # 400
+    print(error.error)
+    # 'Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.'
+    print(error.status)
+    # 400
 ```
 
 &nbsp;

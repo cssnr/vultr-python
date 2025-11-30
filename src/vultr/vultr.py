@@ -217,7 +217,8 @@ class Vultr(object):
 
 
 class VultrException(Exception):
-    """ Exception class for all Vultr error responses. """
+    """Exception class for all Vultr error responses."""
+
     def __init__(self, response: requests.Response):
         try:
             data = response.json()
@@ -226,7 +227,7 @@ class VultrException(Exception):
             error = response.text
         status = response.status_code
         self.error: str = error
-        """Error Message returned from the API"""
+        """Error Message for 400 Codes"""
         self.status: int = status
         """Response Status Code"""
         super().__init__(f"Error {self.status}: {self.error}")
