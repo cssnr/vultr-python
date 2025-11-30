@@ -1,5 +1,6 @@
 import os
-from typing import Optional, Union
+import warnings
+from typing import Optional, Union, List
 
 import requests
 
@@ -8,9 +9,7 @@ class Vultr(object):
     url = "https://api.vultr.com/v2"
 
     def __init__(self, api_key: Optional[str] = None):
-        """
-        :param api_key: Vultr API Key or `VULTR_API_KEY` Environment Variable
-        """
+        """:param api_key: Vultr API Key or `VULTR_API_KEY` Environment Variable"""
         self.api_key = api_key or os.getenv("VULTR_API_KEY")
         """Provide the API key here or with the `VULTR_API_KEY` environment variable"""
         self._session = requests.session()
@@ -21,7 +20,7 @@ class Vultr(object):
         """
         GET Data
         :param url: Request URL. Example `/instances`
-        :param params: Query Parameters
+        :param params: Query Parameters Dictionary
         :return: Response Data
         """
         return self._get(f"{self.url}/{url.lstrip('/')}", params)
@@ -155,7 +154,24 @@ class Vultr(object):
         return self._delete(url)
 
     @staticmethod
+    def filter_list(item_list: List[dict], value: str, key: str = "name") -> dict:
+        """
+        Helper Function to get an Item from a List of Dictionaries
+        :param item_list: List to filter
+        :param value: Value of the Key
+        :param key: Key to check for Value
+        :return: Item or {}
+        """
+        return next((d for d in item_list if str(d.get(key, "")).lower() == value.lower()), {})
+
+    @staticmethod
+    def filter_regions(regions: list, locations: list) -> list:
+        return [d for d in regions if d["id"] in locations]
+
+    @staticmethod
     def filter_keys(keys: list, name: str) -> dict:
+        """Soft Deprecated in 0.2.0. Use `Vultr.filter_list()`"""
+        warnings.warn("Soft Deprecated in 0.2.0. Use filter_list()", PendingDeprecationWarning, stacklevel=2)
         try:
             return next(d for d in keys if d["name"].lower() == name.lower())
         except StopIteration:
@@ -163,6 +179,8 @@ class Vultr(object):
 
     @staticmethod
     def filter_os(os_list: list, name: str) -> dict:
+        """Soft Deprecated in 0.2.0. Use `Vultr.filter_list()`"""
+        warnings.warn("Soft Deprecated in 0.2.0. Use filter_list()", PendingDeprecationWarning, stacklevel=2)
         try:
             return next(d for d in os_list if d["name"].lower() == name.lower())
         except StopIteration:
@@ -170,14 +188,12 @@ class Vultr(object):
 
     @staticmethod
     def filter_scripts(scripts: list, name: str) -> dict:
+        """Soft Deprecated in 0.2.0. Use `Vultr.filter_list()`"""
+        warnings.warn("Soft Deprecated in 0.2.0. Use filter_list()", PendingDeprecationWarning, stacklevel=2)
         try:
             return next(d for d in scripts if d["name"].lower() == name.lower())
         except StopIteration:
             return {}
-
-    @staticmethod
-    def filter_regions(regions: list, locations: list) -> list:
-        return [d for d in regions if d["id"] in locations]
 
     def _get(self, url, params: Optional[dict] = None):
         r = self._session.get(url, params=params, timeout=10)
