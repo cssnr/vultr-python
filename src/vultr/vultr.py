@@ -9,23 +9,47 @@ class Vultr(object):
 
     def __init__(self, api_key: Optional[str] = None):
         """
-        :param str api_key: Vultr API Key or VULTR_API_KEY Environment Variable
+        :param api_key: Vultr API Key or `VULTR_API_KEY` Environment Variable
         """
         self.api_key = api_key or os.getenv("VULTR_API_KEY")
+        """Provide the API key here or with the `VULTR_API_KEY` environment variable"""
         self._session = requests.session()
         if self.api_key:
             self._session.headers.update({"Authorization": f"Bearer {self.api_key}"})
 
     def get(self, url: str, params: Optional[dict] = None):
+        """
+        GET Data
+        :param url: Request URL. Example `/instances`
+        :param params: Query Parameters
+        :return: Response Data
+        """
         return self._get(f"{self.url}/{url.lstrip('/')}", params)
 
     def post(self, url: str, **kwargs):
+        """
+        POST Data
+        :param url: Request URL. Example `/instances`
+        :param kwargs: Request Data Keyword Arguments
+        :return: Response Data
+        """
         return self._post(f"{self.url}/{url.lstrip('/')}", kwargs)
 
     def patch(self, url: str, **kwargs):
+        """
+        PATCH Data
+        :param url: Request URL. Example `/instances/{resource_id}`
+        :param kwargs: Request Data Keyword Arguments
+        :return: Response Data
+        """
         return self._patch(f"{self.url}/{url.lstrip('/')}", kwargs)
 
     def delete(self, url: str):
+        """
+        DELETE a Resource
+        :param url: Request URL. Example `/instances/{resource_id}`
+        :return: None
+        """
         return self._delete(f"{self.url}/{url.lstrip('/')}")
 
     def list_os(self, params: Optional[dict] = None):
@@ -193,6 +217,7 @@ class Vultr(object):
 
 
 class VultrException(Exception):
+    """ Exception class for all Vultr error responses. """
     def __init__(self, response: requests.Response):
         try:
             data = response.json()
@@ -200,6 +225,8 @@ class VultrException(Exception):
         except ValueError:
             error = response.text
         status = response.status_code
-        self.error = error
-        self.status = status
+        self.error: str = error
+        """Error Message returned from the API"""
+        self.status: int = status
+        """Response Status Code"""
         super().__init__(f"Error {self.status}: {self.error}")

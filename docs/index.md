@@ -54,7 +54,7 @@ vultr = Vultr('VULTR_API_KEY')
 List plans and get available regions for that plan
 
 ```python
-plans = vultr.list_plans({'type': 'vc2'})  # vc2 - Cloud Compute
+plans = vultr.list_plans({'type': 'vc2'})  # Filter by type
 plan = plans[0]  # 0 seems to be the base plan
 regions = vultr.list_regions()
 available = vultr.filter_regions(regions, plan['locations'])
