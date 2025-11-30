@@ -71,6 +71,7 @@ Create a new ssh key from key string
 
 ```python
 sshkey = vultr.create_key("key-name", "ssh-rsa AAAA...")
+vultr.delete_key(sshkey['id'])
 ```
 
 Create a new instance
@@ -90,7 +91,7 @@ Arbitrary Methods [get](#Vultr.get), [post](#Vultr.post), [patch](#Vultr.patch),
 ```python
 plans = vultr.get("/plans", {"type": "vc2"})
 sshkey = vultr.post("/ssh-keys", name="key-name", ssh_key="ssh-rsa AAAA...")
-instance = vultr.patch("/instances", plan=plans[1]["id"])
+instance = vultr.patch("/instances/{instance-id}", plan=plans[1]["id"])
 database = vultr.put("/databases/{database-id}", tag="new tag")
 vultr.delete("/snapshots/{snapshot-id}")
 ```
@@ -98,7 +99,7 @@ vultr.delete("/snapshots/{snapshot-id}")
 Error Handling
 
 ```python
->>> instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", **data)
+>>> instance = vultr.create_instance("atl", "vc2-1c-0.5gb-v6", os_id=2284)
 Traceback (most recent call last):
 vultr.vultr.VultrException: Error 400: Server add failed: Ubuntu 24.04 LTS x64 requires a plan with at least 1000 MB memory.
 ```

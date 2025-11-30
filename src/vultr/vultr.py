@@ -24,7 +24,7 @@ class Vultr(object):
         :return: Response Data
         :raises: `VultrException`
         """
-        return self._req("get", f"{self.url}/{url.lstrip('/')}", params)
+        return self._req("get", f"{self.url}/{url.lstrip('/')}", params=params)
 
     def post(self, url: str, **kwargs) -> Any:
         """
@@ -209,8 +209,8 @@ class Vultr(object):
         except StopIteration:
             return {}
 
-    def _req(self, method, url, params: Optional[dict] = None) -> Any:
-        r = self._session.request(method, url, params=params, timeout=10)
+    def _req(self, method, url, data: Any = None, params: Optional[dict] = None) -> Any:
+        r = self._session.request(method, url, params=params, json=data, timeout=10)
         if not r.ok:
             raise VultrException(r)
         if r.status_code == 204:
