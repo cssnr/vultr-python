@@ -5,8 +5,7 @@ on:
     types: [published]
 
 env:
-  url: "https://${{ github.event.release.prerelease && 'test.' || '' }}pypi.org/p/vultr-python"
-  repository-url: "https://${{ github.event.release.prerelease && 'test' || 'upload' }}.pypi.org/legacy/"
+  name: "vultr-python"
 
 jobs:
   build:
@@ -14,10 +13,9 @@ jobs:
     uses: ./.github/workflows/build.yaml
     secrets: inherit
     with:
-      name: "release"
-
+      version: ${{ github.ref_name }}
     permissions:
-      contents: read
+      contents: write
 
   publish:
     name: "Publish"
@@ -30,54 +28,39 @@ jobs:
       id-token: write
 
     environment:
-      name: ${{ github.event.release.prerelease && 'test' || 'pypi' }}
-      url: ${{ env.url }}
+      name: "pypi"
+      url: "https://pypi.org/p/vultr-python"
 
     steps:
-      - name: "Debug event.json"
-        continue-on-error: true
-        run: cat "${GITHUB_EVENT_PATH}"
-
-      - name: "Debug CTX github"
-        continue-on-error: true
-        env:
-          GITHUB_CTX: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CTX"
-
-      #- name: "Debug Environment"
-      #  continue-on-error: true
-      #  run: env
-
       - name: "Debug"
         run: |
           echo "github.ref_name: ${{ github.ref_name }}"
-          echo "name: ${{ github.event.release.prerelease && 'test' || 'pypi' }}"
-          echo "env.url: ${{ env.url }}"
-          echo "env.repository-url: ${{ env.repository-url }}"
+          echo "env.name: ${{ env.name }}"
 
       - name: "Download Artifact"
         uses: actions/download-artifact@v6
         with:
-          name: "release"
+          name: "dist"
           path: "dist"
 
-      - name: "Verify Artifacts"
+      - name: "Verify Artifact"
         env:
           path: "dist"
+          name: ${{ env.name }}
           tag: ${{ github.ref_name }}
         run: |
-          ls -lAh ${path}/*
-          results="$(ls -lAh ${path}/* | awk '{print $9" - "$5}')"
-          markdown='Artifacts:\n```text\n'"${results}"'\n```'
-          echo -e "${markdown}" >> $GITHUB_STEP_SUMMARY
-          ls ${path} | grep -- "-${tag}-" > /dev/null
+          ls -lAh "${path}"/*
+          results="$(ls -lAh "${path}"/* | awk '{print $9" - "$5}')"
+          md="Artifacts:\n\`\`\`text\n${results}\n\`\`\`"
+          echo -e "${md}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Verification String: '${name//-/_}-${tag}-'"
+          find "${path}" -type f | grep -- "${name//-/_}-${tag}-" > /dev/null
 
       - name: "Publish to PyPI"
         id: publish
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           verbose: true
-          repository-url: ${{ env.repository-url }}
           #attestations: false
 
       - name: "Summary"
@@ -85,24 +68,22 @@ jobs:
         env:
           tag: ${{ github.ref_name }}
           url: ${{ env.url }}
-          repository-url: ${{ env.repository-url }}
         run: |
           if [ "${{ steps.publish.outcome }}" == "success" ];then
-            markdown="🎉 Published Version: \`${tag}\`\n\n[${url}](${url})\n\n"
+            md="🎉 Published Version: \`${tag}\`\n\n[${url}](${url})\n\n"
           else
-            markdown="⛔ Error Publishing Version: \`${tag}\`\n\n"
+            md="⛔ Error Publishing Version: \`${tag}\`\n\n"
           fi
-          markdown+="Repository URL: \`${repository-url}\`"
-          echo -e "${markdown}" >> $GITHUB_STEP_SUMMARY
+          echo -e "${md}" >> "$GITHUB_STEP_SUMMARY"
 
       - name: "Send Notification"
         if: ${{ !cancelled() }}
-        uses: sarisia/actions-status-discord@v1
+        uses: sarisia/actions-status-discord@b8381b25576cb341b2af39926ab42c5056cc44ed # v1.15.5
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           description: |
-            ${{ env.url }}
-            ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
+            - ${{ format('https://pypi.org/p/{0}/{1}', env.name, github.ref_name) }}
+            - ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
   release:
     name: "Release"
@@ -114,51 +95,24 @@ jobs:
       contents: write
 
     steps:
-      - name: "Debug"
-        continue-on-error: true
-        run: |
-          echo "github.ref_name: ${{ github.ref_name }}"
-          echo "github.event.release.prerelease: ${{ github.event.release.prerelease }}"
-
       - name: "Debug event.json"
         continue-on-error: true
         run: cat "${GITHUB_EVENT_PATH}"
-
       - name: "Debug CTX github"
         continue-on-error: true
         env:
           GITHUB_CTX: ${{ toJSON(github) }}
         run: echo "$GITHUB_CTX"
+      - name: "Debug Environment"
+        continue-on-error: true
+        run: env
 
-      #- name: "Debug Environment"
-      #  continue-on-error: true
-      #  run: env
-
-      #- name: "Update Latest Tag"
-      #  if: ${{ !github.event.release.prerelease }}
-      #  uses: cssnr/update-version-tags-action@latest
-      #  continue-on-error: true
-      #  with:
-      #    major: false
-      #    minor: false
-      #    tags: latest
-      #    #tag: ${{ github.ref_name }}
-
-      - name: "Download Artifact"
-        uses: actions/download-artifact@v6
-        with:
-          name: "release"
-          path: "dist"
-
-      - name: "List Artifacts"
+      - name: "Debug"
+        continue-on-error: true
         run: |
-          ls -lAh dist
-          ls dist | grep -- "-${{ github.ref_name }}-" > /dev/null
-
-      - name: "Upload Release"
-        uses: cssnr/upload-release-action@latest
-        with:
-          globs: dist/*
+          echo "github.ref_name: ${{ github.ref_name }}"
+          echo "github.event_name: ${{ github.event_name }}"
+          echo "github.event.release.prerelease: ${{ github.event.release.prerelease }}"
 
       - name: "Update Release Notes Action"
         continue-on-error: true
@@ -166,12 +120,12 @@ jobs:
         with:
           location: tail
           pypi: |
-            name: vultr-python
+            name: ${{ env.name }}
             prerelease: ${{ github.event.release.prerelease }}
 
       - name: "Send Failure Notification"
         if: ${{ failure() }}
-        uses: sarisia/actions-status-discord@v1
+        uses: sarisia/actions-status-discord@b8381b25576cb341b2af39926ab42c5056cc44ed # v1.15.5
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          description: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
+          description: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

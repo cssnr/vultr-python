@@ -2,15 +2,25 @@ name: "Build Package"
 
 on:
   workflow_call:
-    inputs:
+    inputs: &inputs
+      version:
+        description: "Build Version"
+        type: string
+        required: true
+      #version-file:
+      #  description: "Version File"
+      #  type: string
+      #  default: "src/*/_version.py"
       name:
         description: "Artifact Name"
         type: string
-        required: true
+        default: "dist"
       path:
         description: "Build Path"
         type: string
-        default: dist
+        default: "dist"
+  workflow_dispatch:
+    inputs: *inputs
 
 jobs:
   build:
@@ -19,7 +29,7 @@ jobs:
     timeout-minutes: 5
 
     permissions:
-      contents: read
+      contents: write
 
     steps:
       - name: "Checkout"
@@ -28,16 +38,14 @@ jobs:
       - name: "Debug event.json"
         continue-on-error: true
         run: cat "${GITHUB_EVENT_PATH}"
-
       - name: "Debug CTX github"
         continue-on-error: true
         env:
           GITHUB_CTX: ${{ toJSON(github) }}
         run: echo "$GITHUB_CTX"
-
-      #- name: "Debug Environment"
-      #  continue-on-error: true
-      #  run: env
+      - name: "Debug Environment"
+        continue-on-error: true
+        run: env
 
       - name: "Setup Python 3.13"
         uses: actions/setup-python@v6
@@ -50,19 +58,33 @@ jobs:
           python -m pip install -U pip
           python -m pip install --group dev
 
+      #- name: "Update Version"
+      #  if: ${{ inputs.version-file }}
+      #  uses: justalemon/VersionPatcher@master
+      #  with:
+      #    version: ${{ inputs.version }}
+      #    initpy-files: ${{ inputs.version-file }}
+      #
+      #- name: "Debug Version"
+      #  if: ${{ inputs.version-file }}
+      #  continue-on-error: true
+      #  run: |
+      #    cat ${{ inputs.version-file }}
+
       - name: "Build"
         run: |
           python -m build
 
       - name: "List Artifacts"
+        continue-on-error: true
         working-directory: ${{ inputs.path }}
         run: |
-          results="$(tree . || ls -lAhR .)"
+          results="$(tree .)"
           echo "::group::results"
           echo "${results}"
           echo "::endgroup::"
-          markdown='Artifacts: `${{ inputs.path }}`\n```text\n'"${results}"'\n```'
-          echo -e "${markdown}" >> $GITHUB_STEP_SUMMARY
+          md="Artifacts: \`${{ inputs.path }}\`\n\`\`\`text\n${results}\n\`\`\`"
+          echo -e "${md}" >> "$GITHUB_STEP_SUMMARY"
 
       - name: "Upload to Actions"
         uses: actions/upload-artifact@v5
@@ -70,9 +92,17 @@ jobs:
           name: ${{ inputs.name }}
           path: ${{ inputs.path }}
 
+      - name: "Upload Release"
+        if: ${{ github.event_name == 'release' }}
+        uses: cssnr/upload-release-action@latest
+        with:
+          globs: |
+            dist/*.whl
+            dist/*.tar.gz
+
       - name: "Send Failure Notification"
         if: ${{ failure() }}
-        uses: sarisia/actions-status-discord@v1
+        uses: sarisia/actions-status-discord@b8381b25576cb341b2af39926ab42c5056cc44ed # v1.15.5
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          description: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
+          description: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
