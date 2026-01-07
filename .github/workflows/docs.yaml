@@ -76,7 +76,7 @@ jobs:
           echo "::group::results"
           echo "${results}"
           echo "::endgroup::"
-          markdown='Artifacts: `${{ inputs.path }}`\n```text\n'"${results}"'\n```'
+          markdown="Artifacts: \`${{ inputs.path }}\`\n\`\`\`text\n${results}\n\`\`\`"
           echo -e "${markdown}" >> "$GITHUB_STEP_SUMMARY"
 
       - name: "Upload Pages Artifact"
