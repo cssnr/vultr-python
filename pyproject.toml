@@ -40,6 +40,7 @@ dev = [
     "requests",
     "ruff",
     "setuptools",
+    "tombi; python_version>='3.10'",
     "ty",
     "types-requests",
     "validate-pyproject[all]",

@@ -74,5 +74,4 @@ jobs:
 
       - name: "Test ${{ matrix.version }}"
         run: |
-          source .venv/bin/activate
           pytest -s

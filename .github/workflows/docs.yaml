@@ -50,6 +50,7 @@ jobs:
       - name: "Build Docs"
         run: |
           python -m pip install -U pip
+          python -m pip install --group dev
           python -m pip install -U pdoc
           #python -m pip install -e .
           python -m pdoc -t docs -o "${{ inputs.path }}" \
@@ -76,7 +77,7 @@ jobs:
           echo "${results}"
           echo "::endgroup::"
           markdown='Artifacts: `${{ inputs.path }}`\n```text\n'"${results}"'\n```'
-          echo -e "${markdown}" >> $GITHUB_STEP_SUMMARY
+          echo -e "${markdown}" >> "$GITHUB_STEP_SUMMARY"
 
       - name: "Upload Pages Artifact"
         if: ${{ inputs.name == 'github-pages' }}
