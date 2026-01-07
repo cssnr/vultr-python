@@ -26,6 +26,8 @@ jobs:
     with:
       version: ""
       #version-file: ""
+    permissions:
+      contents: write
 
   test:
     name: "Test"
