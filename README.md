@@ -24,10 +24,10 @@
 <a title="Vultr Python" href="https://cssnr.github.io/vultr-python/" target="_blank">
 <img alt="Vultr Python" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/cssnr/vultr-python/refs/heads/master/.github/assets/logo.svg"></a>
 
-- [Install](#Install)
-- [Usage](#Usage)
-- [Support](#Support)
-- [Contributing](#Contributing)
+- [Install](#install)
+- [Usage](#usage)
+- [Support](#support)
+- [Contributing](#contributing)
 
 Python 3 wrapper for the Vultr API v2.
 
@@ -44,7 +44,7 @@ Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=
 
 For more details visit [www.vultr.com](https://www.vultr.com/?ref=6905748).
 
-## Install
+## Install<a id="install"></a>
 
 From PyPi: <https://pypi.org/project/vultr-python>
 
@@ -59,7 +59,7 @@ git clone https://github.com/cssnr/vultr-python.git
 python -m pip install vultr-python
 ```
 
-## Usage
+## Usage<a id="usage"></a>
 
 You will need to create an api key and whitelist your IP address for most functions.
 
@@ -144,7 +144,7 @@ Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.
 
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
-# Support
+# Support<a id="support"></a>
 
 For general help or to request a feature, see:
 
@@ -158,7 +158,7 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 - Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=vultr-python)
 - Chat with us on Discord: <https://discord.gg/wXy6m2X8wY>
 
-# Contributing
+# Contributing<a id="contributing"></a>
 
 If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 

@@ -5,10 +5,12 @@ on:
   push:
     branches: [master]
     paths-ignore:
+      - ".gitattributes"
       - ".gitignore"
       - ".prettierignore"
       - "MANIFEST.in"
   pull_request:
+    branches: [master]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -30,25 +32,14 @@ jobs:
       - name: "Debug event.json"
         continue-on-error: true
         run: cat "${GITHUB_EVENT_PATH}"
-
       - name: "Debug CTX github"
         continue-on-error: true
         env:
           GITHUB_CTX: ${{ toJSON(github) }}
         run: echo "$GITHUB_CTX"
-
       - name: "Debug Environment"
         continue-on-error: true
         run: env
-
-      #- name: "Check Changed Files"
-      #  id: changed
-      #  uses: tj-actions/changed-files@v47
-      #  with:
-      #    files: |
-      #      src/**
-      #      tests/**
-      #      pyproject.toml
 
       - name: "Setup Python 3.13"
         uses: actions/setup-python@v6
@@ -56,8 +47,7 @@ jobs:
           python-version: "3.13"
           cache: "pip"
 
-      - name: "Install"
-        id: install
+      - name: "Install Project"
         run: |
           python -m pip install -U pip
           python -m pip install --group dev
@@ -75,7 +65,7 @@ jobs:
 
       - name: "astral-sh/ruff"
         if: ${{ !cancelled() }}
-        uses: astral-sh/ruff-action@v3
+        uses: astral-sh/ruff-action@57714a7c8a2e59f32539362ba31877a1957dded1 # v3.5.1
         with:
           version: latest
 
@@ -90,7 +80,7 @@ jobs:
 
       - name: "isort"
         if: ${{ !cancelled() }}
-        uses: isort/isort-action@v1
+        uses: isort/isort-action@24d8a7a51d33ca7f36c3f23598dafa33f7071326 # v1.1.1
 
       - name: "mypy"
         if: ${{ !cancelled() }}
@@ -107,6 +97,19 @@ jobs:
         run: |
           validate-pyproject pyproject.toml
 
+      - name: "tombi"
+        if: ${{ !cancelled() }}
+        run: |
+          tombi lint
+
+      - name: "yamllint"
+        if: ${{ !cancelled() }}
+        run: |
+          echo "::group::List Files"
+          yamllint -d .github/yamllint.yaml --list-files .
+          echo "::endgroup::"
+          yamllint -d .github/yamllint.yaml .
+
       - name: "prettier"
         if: ${{ !cancelled() }}
         run: |
@@ -115,31 +118,11 @@ jobs:
           echo "::endgroup::"
           npx prettier --check .
 
-      - name: "yamllint"
-        if: ${{ !cancelled() }}
-        env:
-          CONFIG: "{extends: relaxed, ignore: [node_modules/], rules: {line-length: {max: 119}}}"
-        run: |
-          echo "::group::List Files"
-          yamllint -d '${{ env.CONFIG }}' --list-files .
-          echo "::endgroup::"
-          yamllint -d '${{ env.CONFIG }}' .
-
       - name: "actionlint"
         if: ${{ !cancelled() }}
-        run: |
-          echo "::group::Download"
-          loc=$(curl -sI https://github.com/rhysd/actionlint/releases/latest | grep -i '^location:')
-          echo "loc: ${loc}"
-          tag=$(echo "${loc}" | sed -E 's|.*/tag/v?(.*)|\1|' | tr -d '\t\r\n')
-          echo "tag: ${tag}"
-          url="https://github.com/rhysd/actionlint/releases/latest/download/actionlint_${tag}_linux_amd64.tar.gz"
-          echo "url: ${url}"
-          curl -sL "${url}" | tar xz -C "${RUNNER_TEMP}" actionlint
-          file "${RUNNER_TEMP}/actionlint"
-          "${RUNNER_TEMP}/actionlint" --version
-          echo "::endgroup::"
-          "${RUNNER_TEMP}/actionlint" -color -verbose -shellcheck= -pyflakes=
+        uses: cssnr/actionlint-action@v1
+        with:
+          shellcheck_opts: -e SC2012
 
       - name: "pytest"
         if: ${{ !cancelled() }}
@@ -151,21 +134,6 @@ jobs:
 
       - name: "codecov"
         if: ${{ !cancelled() && steps.coverage.outcome == 'success' }}
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-
-      #- name: "hadolint"
-      #  if: ${{ !cancelled() }}
-      #  uses: hadolint/hadolint-action@v3.3.0
-      #  with:
-      #    dockerfile: Dockerfile
-
-      #- name: "Vale"
-      #  if: ${{ !cancelled() }}
-      #  uses: errata-ai/vale-action@v2.1.1
-
-      #- name: "SonarQube"
-      #  uses: SonarSource/sonarqube-scan-action@v4
-      #  env:
-      #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
