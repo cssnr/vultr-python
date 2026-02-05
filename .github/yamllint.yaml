@@ -1,7 +1,6 @@
 extends: relaxed
 
-ignore:
-  - "node_modules/"
+ignore-from-file: .gitignore
 
 rules:
   line-length:

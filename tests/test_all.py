@@ -1,6 +1,5 @@
 from vultr import Vultr
 
-
 vultr = Vultr()
 
 
