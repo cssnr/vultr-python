@@ -16,3 +16,4 @@ coverage.xml
 # App
 site/
 output.txt
+.secrets

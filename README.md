@@ -4,18 +4,19 @@
 [![Pepy Total Downloads](https://img.shields.io/pepy/dt/vultr-python?logo=pypi&logoColor=white&label=total)](https://clickpy.clickhouse.com/dashboard/vultr-python)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9b356c4327df41e395c81de1c717ce11)](https://app.codacy.com/gh/cssnr/vultr-python/dashboard)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_vultr-python&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_vultr-python)
-[![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/vultr-python/actions/workflows/lint.yaml)
-[![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/vultr-python/actions/workflows/test.yaml)
-[![Deployments PyPi](https://img.shields.io/github/deployments/cssnr/vultr-python/pypi?logo=pypi&logoColor=white&label=pypi)](https://pypi.org/project/vultr-python/)
-[![Deployments Pages](https://img.shields.io/github/deployments/cssnr/vultr-python/github-pages?logo=materialformkdocs&logoColor=white&label=github-pages)](https://cssnr.github.io/vultr-python/)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/vultr-python?logo=github&label=updated)](https://github.com/cssnr/vultr-python/graphs/commit-activity)
-[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/vultr-python?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/vultr-python)
-[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/vultr-python?logo=htmx&logoColor=white)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
-[![GitHub Contributors](https://img.shields.io/github/contributors-anon/cssnr/vultr-python?logo=github)](https://github.com/cssnr/vultr-python/graphs/contributors)
-[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/vultr-python?logo=github)](https://github.com/cssnr/vultr-python/discussions)
-[![GitHub Forks](https://img.shields.io/github/forks/cssnr/vultr-python?style=flat&logo=github)](https://github.com/cssnr/vultr-python/forks)
-[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/vultr-python?style=flat&logo=github)](https://github.com/cssnr/vultr-python/stargazers)
-[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&label=org%20stars)](https://cssnr.github.io/)
+[![Deployment PyPi](https://img.shields.io/github/deployments/cssnr/vultr-python/pypi?logo=pypi&logoColor=white&label=pypi)](https://pypi.org/project/vultr-python/)
+[![Deployment Pages](https://img.shields.io/github/deployments/cssnr/vultr-python/github-pages?logo=python&logoColor=white&label=github-pages)](https://cssnr.github.io/vultr-python/)
+[![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/test.yaml?logo=testcafe&logoColor=white&label=test)](https://github.com/cssnr/vultr-python/actions/workflows/test.yaml)
+[![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/vultr-python/lint.yaml?logo=testcafe&logoColor=white&label=lint)](https://github.com/cssnr/vultr-python/actions/workflows/lint.yaml)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/vultr-python?logo=listenhub&label=updated)](https://github.com/cssnr/vultr-python/pulse)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/vultr-python?logo=buffer&label=repo%20size)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/vultr-python?logo=devbox)](https://github.com/cssnr/vultr-python?tab=readme-ov-file#readme)
+[![GitHub Contributors](https://img.shields.io/github/contributors-anon/cssnr/vultr-python?logo=southwestairlines)](https://github.com/cssnr/vultr-python/graphs/contributors)
+[![GitHub Issues](https://img.shields.io/github/issues/cssnr/vultr-python?logo=codeforces&logoColor=white)](https://github.com/cssnr/vultr-python/issues)
+[![GitHub Discussions](https://img.shields.io/github/discussions/cssnr/vultr-python?logo=theconversation)](https://github.com/cssnr/vultr-python/discussions)
+[![GitHub Forks](https://img.shields.io/github/forks/cssnr/vultr-python?style=flat&logo=forgejo&logoColor=white)](https://github.com/cssnr/vultr-python/forks)
+[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/vultr-python?style=flat&logo=gleam&logoColor=white)](https://github.com/cssnr/vultr-python/stargazers)
+[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=apachespark&logoColor=white&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
 
@@ -144,21 +145,21 @@ Full Documentation: [https://cssnr.github.io/vultr-python](https://cssnr.github.
 
 Vultr API Reference: [https://www.vultr.com/api](https://www.vultr.com/api/?ref=6905748)
 
-# Support<a id="support"></a>
+## Support<a id="support"></a>
 
-For general help or to request a feature, see:
-
-- Q&A Discussion: <https://github.com/cssnr/vultr-python/discussions/categories/q-a>
-- Request a Feature: <https://github.com/cssnr/vultr-python/discussions/categories/feature-requests>
-- Chat with us on Discord: <https://discord.gg/wXy6m2X8wY>
-
-If you are experiencing an issue/bug or getting unexpected results, you can:
+If you run into any issues or need help getting started, please do one of the following:
 
 - Report an Issue: <https://github.com/cssnr/vultr-python/issues>
-- Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=vultr-python)
+- Q&A Discussion: <https://github.com/cssnr/vultr-python/discussions/categories/q-a>
+- Request a Feature: <https://github.com/cssnr/vultr-python/issues/new?template=1-feature.yaml>
 - Chat with us on Discord: <https://discord.gg/wXy6m2X8wY>
 
-# Contributing<a id="contributing"></a>
+[![Features](https://img.shields.io/badge/features-brightgreen?style=for-the-badge&logo=rocket&logoColor=white)](https://github.com/cssnr/vultr-python/issues/new?template=1-feature.yaml)
+[![Issues](https://img.shields.io/badge/issues-red?style=for-the-badge&logo=southwestairlines&logoColor=white)](https://github.com/cssnr/vultr-python/issues)
+[![Discussions](https://img.shields.io/badge/discussions-blue?style=for-the-badge&logo=theconversation&logoColor=white)](https://github.com/cssnr/vultr-python/discussions)
+[![Discord](https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/wXy6m2X8wY)
+
+## Contributing<a id="contributing"></a>
 
 If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 

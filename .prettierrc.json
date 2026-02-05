@@ -1,5 +1,4 @@
 {
-  "trailingComma": "es5",
   "semi": false,
   "singleQuote": true,
   "printWidth": 90,
@@ -7,7 +6,8 @@
     {
       "files": ["**/*.html", "**/*.yaml", "**/*.yml"],
       "options": {
-        "singleQuote": false
+        "singleQuote": false,
+        "printWidth": 120
       }
     },
     {
